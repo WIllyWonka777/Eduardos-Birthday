@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Raffle — Eduardo's Birthday</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cyan: #00d4ff;
+      --cyan-dim: rgba(0,212,255,0.12);
+      --cyan-border: rgba(0,212,255,0.25);
+      --navy: #050c18;
+      --navy2: #080f1e;
+      --navy-mid: #0d1828;
+      --navy-mid2: #111f30;
+      --cream: #d6eaf8;
+      --red: #ff4444;
+      --gold: #f5c518;
+      --gold-dim: rgba(245,197,24,0.15);
+    }
+    body { min-height: 100vh; background: var(--navy); font-family: 'DM Sans', sans-serif; overflow-x: hidden; position: relative; }
+    body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,212,255,0.012) 3px, rgba(0,212,255,0.012) 4px); pointer-events: none; z-index: 99; }
+    body::after { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(0,100,180,0.12) 0%, transparent 65%); pointer-events: none; z-index: 0; }
+    .film-strip-left, .film-strip-right { position: fixed; top: 0; bottom: 0; width: 28px; background: var(--navy2); border-right: 1px solid rgba(0,212,255,0.12); z-index: 10; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 10px 0; }
+    .film-strip-right { right: 0; left: auto; border-right: none; border-left: 1px solid rgba(0,212,255,0.12); }
+    .film-hole { width: 12px; height: 16px; background: var(--navy); border-radius: 2px; border: 1px solid rgba(0,212,255,0.18); flex-shrink: 0; }
+    .container { max-width: 460px; margin: 0 auto; padding: 0 44px; position: relative; z-index: 2; }
+    .nav { display: flex; gap: 6px; padding: 14px 0 0; flex-wrap: wrap; }
+    .nav a { flex: 1; min-width: 60px; padding: 9px 4px; background: var(--navy-mid); border: 1px solid var(--cyan-border); color: rgba(0,212,255,0.4); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; text-align: center; transition: all 0.2s ease; }
+    .nav a:hover, .nav a.active { background: var(--cyan); color: var(--navy); font-weight: 700; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+    @keyframes ticketFloat { 0%,100%{transform:rotate(-2deg) translateY(0);} 50%{transform:rotate(2deg) translateY(-6px);} }
+    @keyframes potPulse { 0%,100%{filter:drop-shadow(0 0 8px rgba(245,197,24,0.3));} 50%{filter:drop-shadow(0 0 20px rgba(245,197,24,0.7));} }
+    @keyframes blink { 0%,88%,100%{opacity:1;} 94%{opacity:0.2;} }
+
+    .page-header { text-align: center; padding: 28px 0 20px; animation: fadeUp 0.6s 0.1s ease both; }
+    .tag { display: inline-block; background: var(--gold); color: var(--navy); font-size: 9px; letter-spacing: 4px; text-transform: uppercase; padding: 4px 14px; margin-bottom: 14px; font-weight: 700; animation: blink 2.5s ease-in-out infinite; }
+    .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: var(--cream); letter-spacing: 3px; line-height: 1; }
+    .page-header h1 span { color: var(--gold); text-shadow: 0 0 20px rgba(245,197,24,0.4); }
+    .page-header p { font-size: 13px; color: rgba(214,234,248,0.55); margin-top: 8px; font-style: italic; line-height: 1.6; }
+
+    /* Ticket visual */
+    .ticket-visual {
+      display: flex; justify-content: center; margin-bottom: 20px;
+      animation: fadeUp 0.6s 0.2s ease both; opacity: 0;
+    }
+    .ticket {
+      background: linear-gradient(135deg, #0d1f35, #071018);
+      border: 2px solid var(--gold);
+      border-radius: 8px;
+      width: 280px;
+      padding: 20px;
+      position: relative;
+      animation: ticketFloat 3s ease-in-out infinite;
+      box-shadow: 0 0 30px rgba(245,197,24,0.15), 0 8px 32px rgba(0,0,0,0.6);
+    }
+    .ticket::before, .ticket::after {
+      content: '';
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 18px; height: 18px;
+      background: var(--navy);
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+    }
+    .ticket::before { left: -10px; }
+    .ticket::after { right: -10px; }
+    .ticket-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .ticket-label { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 3px; color: rgba(245,197,24,0.6); text-transform: uppercase; }
+    .ticket-number { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); letter-spacing: 4px; }
+    .ticket-divider { border: none; border-top: 1px dashed rgba(245,197,24,0.3); margin: 10px 0; }
+    .ticket-event { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--cream); letter-spacing: 2px; margin-bottom: 4px; }
+    .ticket-date { font-size: 11px; color: rgba(0,212,255,0.6); letter-spacing: 2px; text-transform: uppercase; }
+    .ticket-price { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); text-align: right; margin-top: 8px; }
+
+    /* Live pot tracker */
+    .pot-tracker {
+      background: linear-gradient(135deg, #0d1f10, #071018);
+      border: 2px solid var(--gold);
+      padding: 20px;
+      margin-bottom: 16px;
+      text-align: center;
+      animation: fadeUp 0.6s 0.3s ease both; opacity: 0;
+      animation: potPulse 2.5s ease-in-out infinite;
+    }
+    .pot-label { font-family: 'DM Sans', sans-serif; font-size: 8px; letter-spacing: 3px; color: rgba(245,197,24,0.6); text-transform: uppercase; margin-bottom: 8px; }
+    .pot-amount { font-family: 'Bebas Neue', sans-serif; font-size: 56px; color: var(--gold); letter-spacing: 2px; line-height: 1; text-shadow: 0 0 20px rgba(245,197,24,0.4); }
+    .pot-amount span { font-size: 28px; opacity: 0.7; }
+    .pot-split { display: flex; gap: 10px; margin-top: 14px; }
+    .pot-half { flex: 1; background: rgba(0,0,0,0.3); padding: 10px 8px; border-radius: 3px; }
+    .pot-half-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+    .pot-half-label.winner { color: rgba(0,212,255,0.6); }
+    .pot-half-label.cause { color: rgba(245,197,24,0.6); }
+    .pot-half-amount { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; }
+    .pot-half-amount.winner { color: var(--cyan); }
+    .pot-half-amount.cause { color: var(--gold); }
+    .tickets-sold { font-size: 11px; color: rgba(214,234,248,0.35); margin-top: 10px; letter-spacing: 1px; }
+
+    /* How it works */
+    .how-it-works {
+      background: var(--navy-mid);
+      border: 1px solid var(--cyan-border);
+      border-left: 3px solid var(--cyan);
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      animation: fadeUp 0.6s 0.35s ease both; opacity: 0;
+    }
+    .how-it-works h2 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--cream); margin-bottom: 14px; }
+    .step { display: flex; gap: 14px; margin-bottom: 12px; align-items: flex-start; }
+    .step:last-child { margin-bottom: 0; }
+    .step-num { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--cyan); width: 28px; flex-shrink: 0; line-height: 1.1; }
+    .step-text { font-size: 13px; color: rgba(214,234,248,0.65); line-height: 1.55; }
+    .step-text strong { color: var(--cream); font-weight: 500; }
+
+    /* Pricing cards */
+    .pricing {
+      display: flex; gap: 10px; margin-bottom: 16px;
+      animation: fadeUp 0.6s 0.4s ease both; opacity: 0;
+    }
+    .price-card { flex: 1; background: var(--navy-mid); border: 1px solid var(--cyan-border); padding: 16px 12px; text-align: center; cursor: pointer; transition: all 0.2s ease; }
+    .price-card:hover, .price-card.selected { background: var(--gold-dim); border-color: var(--gold); }
+    .price-card-tickets { font-family: 'Bebas Neue', sans-serif; font-size: 36px; color: var(--cream); line-height: 1; }
+    .price-card-label { font-size: 9px; letter-spacing: 2px; color: rgba(214,234,248,0.4); text-transform: uppercase; margin: 4px 0; }
+    .price-card-price { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--gold); }
+    .price-card-save { font-size: 9px; color: var(--cyan); letter-spacing: 1px; margin-top: 4px; }
+    .price-card.popular { border-color: rgba(245,197,24,0.5); position: relative; }
+    .popular-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--navy); font-size: 8px; letter-spacing: 2px; font-weight: 700; padding: 2px 10px; text-transform: uppercase; white-space: nowrap; }
+
+    /* Buy section */
+    .buy-section {
+      background: var(--navy-mid);
+      border: 1px solid var(--cyan-border);
+      border-left: 3px solid var(--gold);
+      padding: 20px;
+      margin-bottom: 16px;
+      animation: fadeUp 0.6s 0.45s ease both; opacity: 0;
+    }
+    .buy-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--cream); margin-bottom: 6px; }
+    .buy-section p { font-size: 12px; color: rgba(214,234,248,0.5); margin-bottom: 16px; line-height: 1.5; }
+    .interac-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(245,197,24,0.3); padding: 14px 16px; margin-bottom: 14px; }
+    .interac-label { font-size: 8px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; font-weight: 600; }
+    .interac-email { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--cream); letter-spacing: 1px; }
+    .interac-note { font-size: 10px; color: rgba(214,234,248,0.4); margin-top: 4px; }
+    .ref-box { background: rgba(0,212,255,0.05); border: 1px solid var(--cyan-border); padding: 12px 16px; margin-bottom: 14px; }
+    .ref-label { font-size: 8px; letter-spacing: 3px; color: var(--cyan); text-transform: uppercase; margin-bottom: 4px; font-weight: 600; }
+    .ref-format { font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--cream); letter-spacing: 1px; }
+    .ref-example { font-size: 10px; color: rgba(0,212,255,0.4); margin-top: 3px; font-style: italic; }
+
+    /* Register form -->
+    .form-label { font-size: 8px; letter-spacing: 3px; color: var(--cyan); text-transform: uppercase; margin-bottom: 7px; display: block; font-weight: 600; }
+    .form-input { width: 100%; padding: 11px 13px; background: var(--navy-mid2); border: 1px solid var(--cyan-border); border-bottom: 2px solid rgba(0,212,255,0.2); color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 14px; margin-bottom: 12px; transition: border-color 0.2s ease; outline: none; }
+    .form-input:focus { border-bottom-color: var(--cyan); }
+    .form-input::placeholder { color: rgba(0,212,255,0.2); font-style: italic; }
+    .ticket-qty { display: flex; gap: 8px; margin-bottom: 12px; }
+    .qty-btn { flex: 1; padding: 10px 8px; background: var(--navy-mid); border: 1px solid var(--cyan-border); color: rgba(0,212,255,0.4); font-family: 'DM Sans', sans-serif; font-size: 9px; font-weight: 500; letter-spacing: 1.5px; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; text-align: center; }
+    .qty-btn.selected { background: var(--gold); border-color: var(--gold); color: var(--navy); font-weight: 700; }
+    .submit-btn { width: 100%; padding: 14px; background: var(--gold); border: none; color: var(--navy); font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 4px; cursor: pointer; transition: all 0.25s ease; margin-top: 4px; font-weight: 900; }
+    .submit-btn:active { opacity: 0.8; transform: scale(0.99); }
+    .error-msg { font-size: 9px; letter-spacing: 1.5px; color: var(--red); text-align: center; margin-bottom: 9px; display: none; }
+
+    /* Registered list */
+    .registered-section {
+      background: var(--navy-mid);
+      border: 1px solid var(--cyan-border);
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      animation: fadeUp 0.6s 0.5s ease both; opacity: 0;
+    }
+    .registered-section h2 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--cream); margin-bottom: 14px; }
+    .registered-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(0,0,0,0.2); border: 1px solid rgba(0,212,255,0.1); margin-bottom: 6px; }
+    .registered-tickets { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); width: 30px; text-align: center; flex-shrink: 0; }
+    .registered-name { font-size: 14px; color: var(--cream); flex: 1; }
+    .registered-amount { font-size: 12px; color: rgba(0,212,255,0.5); }
+    .empty-list { text-align: center; padding: 20px; }
+    .empty-list p { font-size: 12px; color: rgba(214,234,248,0.25); font-style: italic; }
+
+    /* Success */
+    .register-success { display: none; background: rgba(245,197,24,0.08); border: 1px solid rgba(245,197,24,0.3); padding: 20px; text-align: center; margin-bottom: 12px; }
+    .register-success h3 { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: 3px; color: var(--gold); margin-bottom: 6px; }
+    .register-success p { font-size: 12px; color: rgba(214,234,248,0.55); line-height: 1.6; }
+
+    .footer { text-align: center; padding: 24px 0 44px; }
+    .footer p { font-size: 8px; letter-spacing: 3px; color: rgba(0,212,255,0.1); text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <div class="film-strip-left">
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  </div>
+  <div class="film-strip-right">
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  </div>
+
+  <div class="container">
+    <nav class="nav">
+      <a href="index.html">🎬 Invite</a>
+      <a href="games.html">🎮 Games</a>
+      <a href="vote.html">🏆 Vote</a>
+      <a href="raffle.html" class="active">🎟️ Raffle</a>
+    </nav>
+
+    <div class="page-header">
+      <div class="tag">🎟️ 50 / 50 Raffle</div>
+      <h1>HELP <span>EDUARDO</span><br>PARTY IN STYLE</h1>
+      <p>Think of this as your birthday gift to me — if you were planning on getting me something, put it here instead.<br>If not, no pressure at all — just show up and let's have a great night.</p>
+    </div>
+
+    <!-- Ticket visual -->
+    <div class="ticket-visual">
+      <div class="ticket">
+        <div class="ticket-top">
+          <span class="ticket-label">🎟️ Admit One</span>
+          <span class="ticket-number">50/50</span>
+        </div>
+        <hr class="ticket-divider"/>
+        <div class="ticket-event">Eduardo's Birthday Raffle</div>
+        <div class="ticket-date">Saturday, April 11th · 70 Princess St</div>
+        <div class="ticket-price">$10</div>
+      </div>
+    </div>
+
+    <!-- Live pot tracker -->
+    <div class="pot-tracker">
+      <div class="pot-label">🏆 Current Pot — the bigger this gets, the better the party</div>
+      <div class="pot-amount"><span>$</span><span id="potAmount">0</span></div>
+      <div class="pot-split">
+        <div class="pot-half">
+          <div class="pot-half-label winner">Winner Gets</div>
+          <div class="pot-half-amount winner">$<span id="winnerAmount">0</span></div>
+        </div>
+        <div class="pot-half">
+          <div class="pot-half-label cause">Night Fund</div>
+          <div class="pot-half-amount cause">$<span id="causeAmount">0</span></div>
+        </div>
+      </div>
+      <div class="tickets-sold"><span id="ticketCount">0</span> tickets sold so far</div>
+    </div>
+
+    <!-- How it works -->
+    <div class="how-it-works">
+      <h2>How It Works</h2>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Pick how many tickets you want — <strong>$5 per ticket</strong>, grab as many as you like. More tickets, better odds, bigger pot.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">Send your Interac e-transfer to <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="026766776370666d2c6f6d6c76677166676d616330323242656f636b6e2c616d6f">[email&#160;protected]</a></strong> with your name in the reference.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text">Register below. Eduardo reviews all payments every <strong>24 hours</strong> — you'll receive your unique raffle code within <strong>24 hours</strong> of payment. That code is your entry for the draw at <strong>8:30 PM</strong>.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>50% of the total pot</strong> goes to the winner in cash at 8:30 PM. The rest goes toward the venue, DJ, snacks, decorations and everything that makes this night legendary. Every ticket makes the party better for all of us. 🎉</div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="pricing">
+      <div class="price-card" onclick="selectPricing(this, 1, 5)">
+        <div class="price-card-tickets">1</div>
+        <div class="price-card-label">ticket</div>
+        <div class="price-card-price">$5</div>
+      </div>
+      <div class="price-card" onclick="selectPricing(this, 3, 15)">
+        <div class="price-card-tickets">3</div>
+        <div class="price-card-label">tickets</div>
+        <div class="price-card-price">$15</div>
+      </div>
+      <div class="price-card popular" onclick="selectPricing(this, 5, 20)">
+        <div class="popular-badge">Best Value</div>
+        <div class="price-card-tickets">5</div>
+        <div class="price-card-label">tickets</div>
+        <div class="price-card-price">$20</div>
+        <div class="price-card-save">Save $5</div>
+      </div>
+    </div>
+
+    <!-- Buy section -->
+    <div class="buy-section">
+      <h2>🎟️ Get Your Tickets</h2>
+      <p>Send your e-transfer, then register below. Eduardo reviews payments every <strong style="color:var(--cream);">24 hours</strong> — your unique raffle code arrives within 24 hours. No need to message Eduardo — everything is handled right here.</p>
+
+      <div class="interac-box">
+        <div class="interac-label">Interac E-Transfer To</div>
+        <div class="interac-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="cca9a8b9adbea8a3e2a1a3a2b8a9bfa8a9a3afadfefcfc8caba1ada5a0e2afa3a1">[email&#160;protected]</a></div>
+        <div class="interac-note">Auto-deposit enabled — no security question needed</div>
+      </div>
+
+      <div class="ref-box">
+        <div class="ref-label">Reference / Message</div>
+        <div class="ref-format">Your Name + Raffle</div>
+        <div class="ref-example">e.g. "Sarah — Raffle — $10" or "Mike — Raffle — $20"</div>
+      </div>
+
+      <span class="form-label">Your name</span>
+      <input class="form-input" id="raffleName" type="text" placeholder="Your full name…" />
+
+      <span class="form-label">How many tickets?</span>
+      <div class="ticket-qty" id="qtyGroup">
+        <button class="qty-btn" onclick="selectQty(this, 1, 5)">1 ticket — $5</button>
+        <button class="qty-btn" onclick="selectQty(this, 3, 15)">3 tickets — $15</button>
+        <button class="qty-btn" onclick="selectQty(this, 5, 20)">5 tickets — $20</button>
+      </div>
+
+      <p class="error-msg" id="raffleError">Please enter your name and select a ticket quantity ✦</p>
+      <button class="submit-btn" onclick="registerRaffle()">I SENT MY E-TRANSFER →</button>
+    </div>
+
+    <!-- Success -->
+    <div class="register-success" id="raffleSuccess">
+      <h3>🎟️ YOU'RE IN THE DRAW!</h3>
+      <p id="raffleSuccessMsg">Eduardo reviews payments every 24 hours — your unique raffle code will be sent to you within 24 hours. Winner announced live at 8:30 PM. Good luck! 🎉</p>
+    </div>
+
+    <!-- Registered list -->
+    <div class="registered-section">
+      <h2>In The Draw</h2>
+      <div id="registeredList"><div class="empty-list"><p>No entries yet. Be the first! 🎟️</p></div></div>
+    </div>
+
+    <div class="footer"><p>Eduardo's Birthday · April 11th 2026 · Toronto</p></div>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    let selectedQty = 0;
+    let selectedAmount = 0;
+    const entries = [];
+
+    function selectPricing(card, qty, amount) {
+      document.querySelectorAll('.price-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectQtyByValues(qty, amount);
+    }
+
+    function selectQty(btn, qty, amount) {
+      document.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      selectedQty = qty;
+      selectedAmount = amount;
+    }
+
+    function selectQtyByValues(qty, amount) {
+      selectedQty = qty;
+      selectedAmount = amount;
+      document.querySelectorAll('.qty-btn').forEach(b => b.classList.remove('selected'));
+      const map = { 1: 0, 3: 1, 5: 2 };
+      const btns = document.querySelectorAll('.qty-btn');
+      if (btns[map[qty]]) btns[map[qty]].classList.add('selected');
+    }
+
+    function registerRaffle() {
+      const name = document.getElementById('raffleName').value.trim();
+      const err = document.getElementById('raffleError');
+      if (!name || !selectedQty) {
+        err.style.display = 'block';
+        setTimeout(() => err.style.display = 'none', 3000);
+        return;
+      }
+      entries.push({ name, qty: selectedQty, amount: selectedAmount });
+      document.getElementById('raffleSuccessMsg').textContent =
+        `${selectedQty} ticket${selectedQty > 1 ? 's' : ''} registered for ${name}. Eduardo will confirm at the party. Winner announced live at 10PM. Good luck! 🎉`;
+      document.querySelector('.buy-section').style.display = 'none';
+      document.getElementById('raffleSuccess').style.display = 'block';
+      updatePot();
+      renderList();
+    }
+
+    function updatePot() {
+      const total = entries.reduce((sum, e) => sum + e.amount, 0);
+      const winner = Math.floor(total / 2);
+      const cause = total - winner;
+      document.getElementById('potAmount').textContent = total;
+      document.getElementById('winnerAmount').textContent = winner;
+      document.getElementById('causeAmount').textContent = cause;
+      document.getElementById('ticketCount').textContent = entries.reduce((sum, e) => sum + e.qty, 0);
+    }
+
+    function renderList() {
+      const list = document.getElementById('registeredList');
+      if (entries.length === 0) {
+        list.innerHTML = '<div class="empty-list"><p>No entries yet. 

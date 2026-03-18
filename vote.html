@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Best Costume Vote — Eduardo's Birthday</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cyan: #00d4ff; --cyan-dim: rgba(0,212,255,0.12); --cyan-border: rgba(0,212,255,0.25);
+      --navy: #050c18; --navy2: #080f1e; --navy-mid: #0d1828; --navy-mid2: #111f30;
+      --cream: #d6eaf8; --red: #ff4444; --gold: #f5c518;
+    }
+    body { min-height: 100vh; background: var(--navy); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,212,255,0.012) 3px, rgba(0,212,255,0.012) 4px); pointer-events: none; z-index: 99; }
+    body::after { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(0,100,180,0.12) 0%, transparent 65%); pointer-events: none; z-index: 0; }
+    .film-strip-left, .film-strip-right { position: fixed; top: 0; bottom: 0; width: 28px; background: var(--navy2); border-right: 1px solid rgba(0,212,255,0.12); z-index: 10; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 10px 0; }
+    .film-strip-right { right: 0; left: auto; border-right: none; border-left: 1px solid rgba(0,212,255,0.12); }
+    .film-hole { width: 12px; height: 16px; background: var(--navy); border-radius: 2px; border: 1px solid rgba(0,212,255,0.18); flex-shrink: 0; }
+    .container { max-width: 460px; margin: 0 auto; padding: 0 44px; position: relative; z-index: 2; }
+    .nav { display: flex; gap: 6px; padding: 14px 0 0; flex-wrap: wrap; }
+    .nav a { flex: 1; min-width: 55px; padding: 9px 4px; background: var(--navy-mid); border: 1px solid var(--cyan-border); color: rgba(0,212,255,0.4); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; text-align: center; transition: all 0.2s ease; }
+    .nav a:hover, .nav a.active { background: var(--cyan); color: var(--navy); font-weight: 700; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+    @keyframes trophyFloat { 0%,100%{transform:translateY(0) rotate(-3deg);} 50%{transform:translateY(-8px) rotate(3deg);} }
+    @keyframes confettiFall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1;} 100%{transform:translateY(110vh) rotate(720deg);opacity:0;} }
+    @keyframes winnerReveal { 0%{opacity:0;transform:scale(0.8);} 60%{transform:scale(1.05);} 100%{opacity:1;transform:scale(1);} }
+
+    .page-header { text-align: center; padding: 28px 0 20px; animation: fadeUp 0.6s 0.1s ease both; }
+    .tag { display: inline-block; background: var(--gold); color: var(--navy); font-size: 9px; letter-spacing: 4px; text-transform: uppercase; padding: 4px 14px; margin-bottom: 14px; font-weight: 700; }
+    .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: var(--cream); letter-spacing: 3px; line-height: 1; }
+    .page-header h1 span { color: var(--gold); text-shadow: 0 0 20px rgba(245,197,24,0.4); }
+    .page-header p { font-size: 13px; color: rgba(214,234,248,0.5); margin-top: 8px; font-style: italic; }
+
+    /* Prize banner */
+    .prize-banner { background: linear-gradient(135deg, #1a1400, #0a0c18); border: 2px solid rgba(245,197,24,0.5); padding: 18px 20px; margin-bottom: 16px; display: flex; align-items: center; gap: 14px; animation: fadeUp 0.6s 0.2s ease both; opacity: 0; }
+    .prize-trophy { font-size: 38px; animation: trophyFloat 3s ease-in-out infinite; }
+    .prize-text h2 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--gold); margin-bottom: 4px; }
+    .prize-text p { font-size: 12px; color: rgba(214,234,248,0.55); line-height: 1.6; }
+    .prize-text strong { color: var(--cream); }
+    .prize-amount { font-family: 'Bebas Neue', sans-serif; font-size: 44px; color: var(--gold); line-height: 1; flex-shrink: 0; text-shadow: 0 0 20px rgba(245,197,24,0.4); }
+
+    /* Voting notice */
+    .vote-notice { background: var(--navy-mid); border: 1px solid var(--cyan-border); border-left: 3px solid var(--cyan); padding: 13px 18px; margin-bottom: 16px; animation: fadeUp 0.6s 0.25s ease both; opacity: 0; }
+    .vote-notice p { font-size: 12px; color: rgba(214,234,248,0.5); line-height: 1.6; }
+    .vote-notice strong { color: var(--cream); }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 8px; margin-bottom: 18px; animation: fadeUp 0.6s 0.3s ease both; opacity: 0; }
+    .tab { flex: 1; padding: 11px; background: var(--navy-mid); border: 1px solid var(--cyan-border); color: rgba(0,212,255,0.4); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; text-align: center; transition: all 0.2s ease; }
+    .tab.active { background: var(--cyan); border-color: var(--cyan); color: var(--navy); font-weight: 700; }
+    .panel { display: none; }
+    .panel.active { display: block; animation: fadeUp 0.4s ease both; }
+
+    /* Nominee cards */
+    .nominee-card { background: var(--navy-mid); border: 1px solid var(--cyan-border); padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; transition: border-color 0.2s ease; }
+    .nominee-card.my-vote { border-color: var(--gold); background: rgba(245,197,24,0.05); }
+    .nominee-rank { font-family: 'Bebas Neue', sans-serif; font-size: 26px; color: rgba(0,212,255,0.3); width: 30px; text-align: center; flex-shrink: 0; }
+    .nominee-info { flex: 1; }
+    .nominee-name { font-size: 14px; color: var(--cream); font-weight: 500; }
+    .nominee-character { font-size: 11px; color: rgba(0,212,255,0.45); margin-top: 2px; font-style: italic; }
+    .nominee-voted-tag { font-size: 9px; letter-spacing: 1px; color: var(--gold); text-transform: uppercase; margin-top: 4px; }
+    .vote-btn { padding: 9px 14px; background: transparent; border: 1px solid rgba(0,212,255,0.3); color: rgba(0,212,255,0.5); font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; flex-shrink: 0; }
+    .vote-btn:hover { background: var(--cyan-dim); border-color: var(--cyan); color: var(--cyan); }
+    .vote-btn.active-vote { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 700; }
+    .change-vote { font-size: 9px; color: rgba(0,212,255,0.4); text-align: center; margin-bottom: 14px; letter-spacing: 1px; }
+    .empty-state { text-align: center; padding: 28px; background: var(--navy-mid); border: 1px dashed rgba(0,212,255,0.15); }
+    .empty-state p { font-size: 12px; color: rgba(214,234,248,0.25); font-style: italic; }
+
+    /* Reveal button — Eduardo only -->
+    .reveal-section { background: rgba(245,197,24,0.06); border: 1px solid rgba(245,197,24,0.25); padding: 18px 20px; margin-bottom: 14px; text-align: center; }
+    .reveal-section p { font-size: 11px; color: rgba(214,234,248,0.4); margin-bottom: 12px; letter-spacing: 1px; }
+    .reveal-btn { padding: 14px 28px; background: var(--gold); border: none; color: var(--navy); font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 4px; cursor: pointer; transition: all 0.2s; }
+    .reveal-btn:active { opacity: 0.85; transform: scale(0.98); }
+
+    /* Confetti */
+    .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 200; overflow: hidden; }
+    .confetti-piece { position: absolute; top: -20px; animation: confettiFall linear forwards; }
+
+    /* Winner display */
+    .winner-box { background: linear-gradient(135deg, #1a1400, #080a18); border: 2px solid var(--gold); padding: 28px 20px; text-align: center; margin-bottom: 16px; animation: winnerReveal 0.8s ease forwards; }
+    .winner-trophy-big { font-size: 56px; margin-bottom: 10px; }
+    .winner-label { font-size: 9px; letter-spacing: 4px; color: rgba(245,197,24,0.5); text-transform: uppercase; margin-bottom: 8px; }
+    .winner-name { font-family: 'Bebas Neue', sans-serif; font-size: 40px; letter-spacing: 3px; color: var(--gold); text-shadow: 0 0 24px rgba(245,197,24,0.5); line-height: 1; }
+    .winner-character { font-size: 14px; color: rgba(214,234,248,0.55); margin-top: 6px; font-style: italic; }
+    .winner-prizes { display: flex; gap: 8px; margin-top: 16px; justify-content: center; flex-wrap: wrap; }
+    .winner-prize-tag { background: var(--gold); color: var(--navy); font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 2px; padding: 6px 16px; }
+    .winner-votes { font-size: 10px; letter-spacing: 2px; color: rgba(245,197,24,0.3); text-transform: uppercase; margin-top: 10px; }
+
+    /* Digital sash */
+    .sash-section { margin-bottom: 16px; }
+    .sash-section h3 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--cream); margin-bottom: 10px; }
+    .sash-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
+    .digital-sash {
+      background: linear-gradient(135deg, #b8860a, #f5c518, #d4a010, #f5c518, #b8860a);
+      width: 80px; padding: 60px 0;
+      text-align: center; position: relative;
+      transform: rotate(-5deg);
+      box-shadow: 0 4px 20px rgba(245,197,24,0.4);
+      clip-path: polygon(15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%, 0% 50%);
+    }
+    .sash-text { font-family: 'Bebas Neue', sans-serif; writing-mode: vertical-rl; text-orientation: mixed; font-size: 13px; letter-spacing: 3px; color: var(--navy); transform: rotate(180deg); white-space: nowrap; }
+
+    /* Printable sash */
+    .print-btn { width: 100%; padding: 13px; background: transparent; border: 1px solid rgba(245,197,24,0.4); color: var(--gold); font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 3px; cursor: pointer; transition: all 0.2s; margin-bottom: 8px; }
+    .print-btn:hover { background: rgba(245,197,24,0.08); }
+
+    /* Printable certificate — hidden until print -->
+    #printable { display: none; }
+    @media print {
+      body > *:not(#printable) { display: none !important; }
+      #printable {
+        display: flex !important;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background: white;
+        font-family: 'Bebas Neue', sans-serif;
+        padding: 40px;
+      }
+      .print-border { border: 8px double #b8860a; padding: 40px 60px; text-align: center; width: 100%; max-width: 500px; }
+      .print-stars { font-size: 32px; letter-spacing: 8px; color: #b8860a; margin-bottom: 16px; }
+      .print-title { font-size: 18px; letter-spacing: 6px; color: #888; margin-bottom: 8px; }
+      .print-event { font-size: 14px; letter-spacing: 3px; color: #aaa; margin-bottom: 24px; }
+      .print-award { font-size: 42px; letter-spacing: 4px; color: #b8860a; margin-bottom: 8px; line-height: 1; }
+      .print-name { font-size: 36px; letter-spacing: 3px; color: #222; margin-bottom: 6px; }
+      .print-character { font-size: 18px; letter-spacing: 2px; color: #666; font-style: italic; margin-bottom: 24px; }
+      .print-divider { width: 60%; border: 1px solid #b8860a; margin: 16px auto; }
+      .print-footer { font-size: 12px; letter-spacing: 2px; color: #aaa; }
+
+      /* Sash design for print */
+      .print-sash {
+        margin-top: 40px;
+        background: linear-gradient(180deg, #b8860a, #f5c518, #d4a010);
+        width: 100px; padding: 80px 16px;
+        text-align: center;
+        clip-path: polygon(15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%, 0% 50%);
+      }
+      .print-sash-text { font-size: 11px; letter-spacing: 3px; color: #222; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; }
+    }
+
+    .no-winner { text-align: center; padding: 32px; background: var(--navy-mid); border: 1px dashed rgba(0,212,255,0.15); }
+    .no-winner p { font-size: 12px; color: rgba(214,234,248,0.25); font-style: italic; }
+
+    .footer { text-align: center; padding: 24px 0 44px; }
+    .footer p { font-size: 8px; letter-spacing: 3px; color: rgba(0,212,255,0.1); text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <div class="film-strip-left">
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  </div>
+  <div class="film-strip-right">
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  </div>
+
+  <!-- Confetti container -->
+  <div class="confetti-wrap" id="confettiWrap"></div>
+
+  <!-- Printable certificate -->
+  <div id="printable">
+    <div class="print-border">
+      <div class="print-stars">★ ★ ★</div>
+      <div class="print-title">Eduardo's Birthday · April 11th 2026</div>
+      <div class="print-event">Main Character Energy Party · Toronto</div>
+      <div class="print-award">Best Costume</div>
+      <div class="print-name" id="print-name">—</div>
+      <div class="print-character" id="print-character">—</div>
+      <div class="print-divider"></div>
+      <div class="print-footer">$20 Cash Prize · Bragging Rights Forever · 🏆</div>
+    </div>
+    <div class="print-sash">
+      <div class="print-sash-text">BEST COSTUME · APRIL 11 2026</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <nav class="nav">
+      <a href="index.html">🎬 Invite</a>
+      <a href="games.html">🎮 Games</a>
+      <a href="vote.html" class="active">🏆 Vote</a>
+      <a href="raffle.html">🎟️ Raffle</a>
+    </nav>
+
+    <div class="page-header">
+      <div class="tag">🏆 Awards Night</div>
+      <h1>BEST <span>COSTUME</span></h1>
+      <p>Vote on the night. One vote per person — but you can change your mind.</p>
+    </div>
+
+    <div class="prize-banner">
+      <div class="prize-trophy">🏆</div>
+      <div class="prize-text">
+        <h2>Winner Gets It All</h2>
+        <p>A real <strong>winner's trophy</strong> 🏆 · A <strong>winner's sash</strong> to wear all night · A proper <strong>announcement</strong> in front of everyone · An official <strong>certificate</strong> · And bragging rights that don't expire. 👑</p>
+      </div>
+      <div class="prize-amount">👑</div>
+    </div>
+
+    <div class="vote-notice">
+      <p>🗳️ <strong>Vote on the night of the party.</strong> One vote per device — but you can change it any time before the winner is announced at <strong>8:30 PM</strong>. Winner gets a trophy, a sash, and a proper announcement in front of everyone. No cheating. We're watching. 👀</p>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('vote', this)">🗳️ Vote</div>
+      <div class="tab" onclick="showTab('winner', this)">🏆 Winner</div>
+    </div>
+
+    <!-- Vote panel -->
+    <div class="panel active" id="panel-vote">
+      <div id="vote-list"><div class="empty-state"><p>Nominees load from RSVPs. Come back on the night! 🎭</p></div></div>
+    </div>
+
+    <!-- Winner panel -->
+    <div class="panel" id="panel-winner">
+      <div class="reveal-section">
+        <p>⚠️ Eduardo only — tap below to reveal the winner at 8:30 PM</p>
+        <button class="reveal-btn" onclick="revealWinner()">🏆 REVEAL THE WINNER</button>
+      </div>
+      <div id="winner-display"><div class="no-winner"><p>Winner not yet revealed. Check back at 8:30 PM! 🏆</p></div></div>
+    </div>
+
+    <div class="footer"><p>Eduardo's Birthday · April 11th 2026 · Toronto</p></div>
+  </div>
+
+  <script>
+    // Load nominees from sessionStorage
+    let nominees = JSON.parse(sessionStorage.getItem('nominees') || '[]');
+    // Device fingerprint for anti-cheat
+    const deviceId = (() => {
+      let id = localStorage.getItem('partyDeviceId');
+      if (!id) { id = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('partyDeviceId', id); }
+      return id;
+    })();
+    // Track this device's vote
+    let myVote = localStorage.getItem('costumeVote_eduardo2026') || null;
+    let winnerRevealed = false;
+
+    window.addEventListener('load', () => renderVoteList());
+
+    function showTab(tab, el) {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById(`panel-${tab}`).classList.add('active');
+      if (tab === 'vote') renderVoteList();
+    }
+
+    function renderVoteList() {
+      const el = document.getElementById('vote-list');
+      if (!nominees.length) {
+        el.innerHTML = '<div class="empty-state"><p>Nominees load from RSVPs. Come back on the night! 🎭</p></div>';
+        return;
+      }
+      let html = '';
+      if (myVote) {
+        html += '<p class="change-vote">✓ You voted — tap another nominee to change your vote anytime before 8:30 PM</p>';
+      }
+      html += nominees.map((n, i) => {
+        const isMyVote = myVote === n.name;
+        return `
+        <div class="nominee-card ${isMyVote ? 'my-vote' : ''}">
+          <div class="nominee-rank">${i + 1}</div>
+          <div class="nominee-info">
+            <div class="nominee-name">${n.name}</div>
+            <div class="nominee-character">as ${n.character}</div>
+            ${isMyVote ? '<div class="nominee-voted-tag">⭐ Your vote</div>' : ''}
+          </div>
+          <button class="vote-btn ${isMyVote ? 'active-vote' : ''}" onclick="castVote('${n.name}')">
+            ${isMyVote ? '✓ VOTED' : 'VOTE'}
+          </button>
+        </div>`;
+      }).join('');
+      el.innerHTML = html;
+    }
+
+    function castVote(name) {
+      // Toggle off if same, otherwise change vote
+      if (myVote === name) {
+        myVote = null;
+        localStorage.removeItem('costumeVote_eduardo2026');
+        const n = nominees.find(x => x.name === name);
+        if (n && n.votes > 0) n.votes--;
+      } else {
+        // Remove previous vote
+        if (myVote) {
+          const prev = nominees.find(x => x.name === myVote);
+          if (prev && prev.votes > 0) prev.votes--;
+        }
+        myVote = name;
+        localStorage.setItem('costumeVote_eduardo2026', name);
+        const n = nominees.find(x => x.name === name);
+        if (n) n.votes++;
+      }
+      sessionStorage.setItem('nominees', JSON.stringify(nominees));
+      renderVoteList();
+    }
+
+    function revealWinner() {
+      const total = nominees.reduce((s, n) => s + n.votes, 0);
+      const el = document.getElementById('winner-display');
+      if (!total) {
+        el.innerHTML = '<div class="no-winner"><p>No votes yet — get people voting first! 🗳️</p></div>';
+        return;
+      }
+      const winner = nominees.reduce((a, b) => a.votes > b.votes ? a : b);
+      winnerRevealed = true;
+
+      // Update printable
+      document.getElementById('print-name').textContent = winner.name;
+      document.getElementById('print-character').textContent = `as ${winner.character}`;
+
+      // Launch confetti
+      launchConfetti();
+
+      el.innerHTML = `
+        <div class="winner-box">
+          <div class="winner-trophy-big">🏆</div>
+          <div class="winner-label">Best Main Character · April 11th 2026</div>
+          <div class="winner-name">${winner.name}</div>
+          <div class="winner-character">as ${winner.character}</div>
+          <div class="winner-prizes">
+            <span class="winner-prize-tag">🏆 TROPHY</span>
+            <span class="winner-prize-tag">🎀 WINNER'S SASH</span>
+            <span class="winner-prize-tag">📣 ANNOUNCED LIVE</span>
+            <span class="winner-prize-tag">👑 BRAGGING RIGHTS</span>
+          </div>
+          <div class="winner-votes">${winner.votes} vote${winner.votes !== 1 ? 's' : ''} · ${total} total cast</div>
+        </div>
+        <div class="sash-section">
+          <h3>Digital Sash 🎀</h3>
+          <div class="sash-wrap">
+            <div class="digital-sash">
+              <div class="sash-text">BEST COSTUME · ${winner.name.toUpperCase()} · APRIL 11 2026</div>
+            </div>
+          </div>
+          <button class="print-btn" onclick="window.print()">🖨️ PRINT CERTIFICATE + SASH</button>
+          <button class="print-btn" style="font-size:13px;border-color:rgba(0,212,255,0.3);color:var(--cyan);" onclick="shareWinner('${winner.name}', '${winner.character}')">📲 SHARE THE WINNER</button>
+        </div>`;
+
+      document.querySelector('.reveal-section').style.display = 'none';
+    }
+
+    function shareWinner(name, character) {
+      const text = `🏆 Best Costume Winner at Eduardo's Birthday!\n\n${name} as ${character}\n\nApril 11th 2026 · Main Character Energy Party · Toronto 🎬`;
+      if (navigator.share) {
+        navigator.share({ title: "Best Costume Winner!", text });
+      } else {
+        navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard! 📋'));
+      }
+    }
+
+    function launchConfetti() {
+      const wrap = document.getElementById('confettiWrap');
+      const colors = ['#f5c518', '#00d4ff', '#ffffff', '#ff4444', '#d4a010'];
+      for (let i = 0; i < 80; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        const size = 6 + Math.random() * 8;
+        el.style.cssText = `
+          left:${Math.random() * 100}%;
+          width:${size}px; height:${Math.random() > 0.5 ? size : size * 0.4}px;
+          border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+          background:${colors[Math.floor(Math.random() * colors.length)]};
+          animation-duration:${2 + Math.random() * 2.5}s;
+          animation-delay:${Math.random() * 1.5}s;
+        `;
+        wrap.appendChild(el);
+        setTimeout(() => el.remove(), 5000);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Game Sign-Ups — Eduardo's Birthday</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cyan: #00d4ff; --cyan-dim: rgba(0,212,255,0.12); --cyan-border: rgba(0,212,255,0.25);
+      --navy: #050c18; --navy2: #080f1e; --navy-mid: #0d1828; --navy-mid2: #111f30;
+      --cream: #d6eaf8; --red: #ff4444; --gold: #f5c518;
+    }
+    body { min-height: 100vh; background: var(--navy); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,212,255,0.012) 3px, rgba(0,212,255,0.012) 4px); pointer-events: none; z-index: 99; }
+    body::after { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(0,100,180,0.12) 0%, transparent 65%); pointer-events: none; z-index: 0; }
+    .film-strip-left, .film-strip-right { position: fixed; top: 0; bottom: 0; width: 28px; background: var(--navy2); border-right: 1px solid rgba(0,212,255,0.12); z-index: 10; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 10px 0; }
+    .film-strip-right { right: 0; left: auto; border-right: none; border-left: 1px solid rgba(0,212,255,0.12); }
+    .film-hole { width: 12px; height: 16px; background: var(--navy); border-radius: 2px; border: 1px solid rgba(0,212,255,0.18); flex-shrink: 0; }
+    .container { max-width: 460px; margin: 0 auto; padding: 0 44px; position: relative; z-index: 2; }
+    .nav { display: flex; gap: 6px; padding: 14px 0 0; flex-wrap: wrap; }
+    .nav a { flex: 1; min-width: 55px; padding: 9px 4px; background: var(--navy-mid); border: 1px solid var(--cyan-border); color: rgba(0,212,255,0.4); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; text-align: center; transition: all 0.2s ease; }
+    .nav a:hover, .nav a.active { background: var(--cyan); color: var(--navy); font-weight: 700; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+
+    .page-header { text-align: center; padding: 28px 0 20px; animation: fadeUp 0.6s 0.1s ease both; }
+    .page-header .tag { display: inline-block; background: var(--red); color: white; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; padding: 4px 14px; margin-bottom: 14px; font-weight: 700; }
+    .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 52px; color: var(--cream); letter-spacing: 3px; line-height: 1; }
+    .page-header h1 span { color: var(--cyan); }
+    .page-header p { font-size: 13px; color: rgba(214,234,248,0.5); margin-top: 8px; font-style: italic; }
+
+    /* Game tabs */
+    .game-tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; animation: fadeUp 0.6s 0.2s ease both; opacity: 0; }
+    .game-tab { flex: 1; min-width: 80px; padding: 12px 6px; background: var(--navy-mid); border: 1px solid var(--cyan-border); color: rgba(214,234,248,0.4); font-size: 9px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-align: center; transition: all 0.2s ease; position: relative; }
+    .game-tab.active { background: var(--cyan-dim); border-color: var(--cyan); color: var(--cream); font-weight: 600; }
+    .game-tab-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+    .game-tab-name { display: block; margin-bottom: 3px; }
+
+    /* Paid / Free badges on tabs */
+    .badge { display: inline-block; font-size: 7px; letter-spacing: 1px; padding: 1px 6px; border-radius: 2px; text-transform: uppercase; font-weight: 700; }
+    .badge-paid { background: var(--gold); color: var(--navy); }
+    .badge-free { background: rgba(0,212,255,0.2); color: var(--cyan); border: 1px solid rgba(0,212,255,0.3); }
+
+    .game-panel { display: none; }
+    .game-panel.active { display: block; animation: fadeUp 0.4s ease both; }
+
+    /* Tournament header */
+    .tournament-header { background: var(--navy-mid); border: 1px solid var(--cyan-border); border-left: 3px solid var(--gold); padding: 18px 20px; margin-bottom: 14px; }
+    .tournament-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; color: var(--cream); margin-bottom: 6px; }
+    .tournament-header p { font-size: 12px; color: rgba(214,234,248,0.45); line-height: 1.55; }
+
+    /* Prize card */
+    .prize-card { background: linear-gradient(135deg, #0d1f10, #071018); border: 1px solid rgba(245,197,24,0.4); padding: 14px 18px; margin-bottom: 14px; display: flex; align-items: center; gap: 14px; }
+    .prize-icon { font-size: 28px; flex-shrink: 0; }
+    .prize-info h3 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--gold); margin-bottom: 3px; }
+    .prize-info p { font-size: 11px; color: rgba(214,234,248,0.5); line-height: 1.5; }
+    .prize-info strong { color: var(--cream); }
+
+    /* Buy-in notice */
+    .buyin-notice { background: rgba(245,197,24,0.07); border: 1px solid rgba(245,197,24,0.25); padding: 12px 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; }
+    .buyin-notice-text { font-size: 12px; color: rgba(214,234,248,0.6); line-height: 1.5; }
+    .buyin-notice-text strong { color: var(--gold); }
+    .buyin-notice-price { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--gold); flex-shrink: 0; }
+
+    /* Interac mini box */
+    .interac-mini { background: rgba(0,0,0,0.25); border: 1px solid rgba(245,197,24,0.2); padding: 10px 14px; margin-bottom: 14px; }
+    .interac-mini-label { font-size: 8px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 3px; font-weight: 600; }
+    .interac-mini-email { font-size: 13px; color: var(--cream); }
+    .interac-mini-note { font-size: 10px; color: rgba(214,234,248,0.35); margin-top: 2px; }
+
+    /* Free game header */
+    .free-header { background: var(--navy-mid); border: 1px solid var(--cyan-border); border-left: 3px solid var(--cyan); padding: 18px 20px; margin-bottom: 14px; }
+    .free-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; color: var(--cream); margin-bottom: 4px; }
+    .free-badge-inline { display: inline-block; background: rgba(0,212,255,0.15); border: 1px solid rgba(0,212,255,0.3); color: var(--cyan); font-size: 8px; letter-spacing: 2px; padding: 2px 10px; text-transform: uppercase; margin-bottom: 8px; }
+    .free-header p { font-size: 12px; color: rgba(214,234,248,0.45); line-height: 1.55; }
+
+    /* Sign-up form */
+    .signup-form { background: var(--navy-mid); border: 1px solid var(--cyan-border); padding: 18px 20px; margin-bottom: 14px; }
+    .form-label { font-size: 8px; letter-spacing: 3px; color: var(--cyan); text-transform: uppercase; margin-bottom: 7px; display: block; font-weight: 600; }
+    .form-input { width: 100%; padding: 11px 13px; background: var(--navy-mid2); border: 1px solid var(--cyan-border); border-bottom: 2px solid rgba(0,212,255,0.2); color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 14px; margin-bottom: 12px; transition: border-color 0.2s ease; outline: none; }
+    .form-input:focus { border-bottom-color: var(--cyan); }
+    .form-input::placeholder { color: rgba(0,212,255,0.2); font-style: italic; }
+    .form-btn { width: 100%; padding: 13px; background: var(--cyan); border: none; color: var(--navy); font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; cursor: pointer; transition: all 0.2s ease; font-weight: 900; }
+    .form-btn.gold { background: var(--gold); }
+    .form-btn:active { opacity: 0.85; }
+
+    /* Teams / Players list */
+    .list-section { margin-bottom: 14px; }
+    .list-section h3 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--cream); margin-bottom: 10px; }
+    .team-item { display: flex; align-items: center; gap: 12px; padding: 11px 16px; background: var(--navy-mid); border: 1px solid var(--cyan-border); margin-bottom: 6px; }
+    .team-seed { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); width: 28px; flex-shrink: 0; }
+    .team-name { font-size: 14px; color: var(--cream); font-weight: 500; flex: 1; }
+    .team-players { font-size: 11px; color: rgba(0,212,255,0.4); margin-top: 2px; }
+    .team-paid { font-size: 10px; color: var(--gold); background: rgba(245,197,24,0.1); padding: 2px 8px; border-radius: 2px; flex-shrink: 0; }
+    .player-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--navy-mid); border: 1px solid var(--cyan-border); margin-bottom: 6px; }
+    .player-num { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--cyan); width: 26px; }
+    .player-name { font-size: 13px; color: var(--cream); flex: 1; }
+    .empty-state { text-align: center; padding: 22px; background: var(--navy-mid); border: 1px dashed rgba(0,212,255,0.15); }
+    .empty-state p { font-size: 12px; color: rgba(214,234,248,0.25); font-style: italic; }
+
+    /* Bracket */
+    .bracket-section { background: var(--navy-mid); border: 1px solid var(--cyan-border); padding: 18px 20px; margin-bottom: 14px; }
+    .bracket-section h3 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--cream); margin-bottom: 12px; }
+    .bracket-note { font-size: 12px; color: rgba(214,234,248,0.25); font-style: italic; text-align: center; padding: 12px; }
+    .match-card { background: rgba(0,0,0,0.3); border: 1px solid rgba(0,212,255,0.12); padding: 12px; margin-bottom: 8px; }
+    .match-label { font-size: 8px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+    .match-team { font-size: 13px; color: var(--cream); margin-bottom: 4px; }
+    .match-vs { font-size: 10px; color: rgba(214,234,248,0.25); font-style: italic; margin: 4px 0; }
+
+    /* Pot tracker for paid games */
+    .game-pot { background: rgba(245,197,24,0.06); border: 1px solid rgba(245,197,24,0.25); padding: 14px 18px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
+    .game-pot-label { font-size: 8px; letter-spacing: 3px; color: rgba(245,197,24,0.6); text-transform: uppercase; margin-bottom: 4px; }
+    .game-pot-amount { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); }
+    .game-pot-split { text-align: right; }
+    .game-pot-split-line { font-size: 10px; color: rgba(214,234,248,0.4); margin-top: 2px; }
+
+    .rules-box { background: rgba(0,212,255,0.04); border: 1px solid rgba(0,212,255,0.2); padding: 16px 18px; margin-bottom: 14px; }
+    .rules-title { font-family: "Bebas Neue", sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--cream); margin-bottom: 12px; }
+    .rules-grid { display: flex; flex-direction: column; gap: 8px; }
+    .rule-item { display: flex; align-items: flex-start; gap: 10px; }
+    .rule-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .rule-text { font-size: 12px; color: rgba(214,234,248,0.55); line-height: 1.5; }
+    .rule-text strong { color: var(--cream); }
+    .footer { text-align: center; padding: 24px 0 44px; }
+    .footer p { font-size: 8px; letter-spacing: 3px; color: rgba(0,212,255,0.1); text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <div class="film-strip-left">
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  </div>
+  <div class="film-strip-right">
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  </div>
+
+  <div class="container">
+    <nav class="nav">
+      <a href="index.html">🎬 Invite</a>
+      <a href="games.html" class="active">🎮 Games</a>
+      <a href="vote.html">🏆 Vote</a>
+      <a href="raffle.html">🎟️ Raffle</a>
+    </nav>
+
+    <div class="page-header">
+      <div class="tag">🎮 Game Night</div>
+      <h1>SIGN <span>UP</span></h1>
+      <p>Sign up in advance to guarantee your spot — spaces are limited. If you miss pre-signup you can try on the night, but it's not guaranteed. Paid spots confirmed within 24 hours.</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="game-tabs">
+      <div class="game-tab active" onclick="showGame('beerpong', this)">
+        <span class="game-tab-icon">🏓</span>
+        <span class="game-tab-name">Beer Pong</span>
+        <span class="badge badge-paid">$10</span>
+      </div>
+      <div class="game-tab" onclick="showGame('mariokart', this)">
+        <span class="game-tab-icon">🏎️</span>
+        <span class="game-tab-name">Mario Kart</span>
+        <span class="badge badge-paid">$10</span>
+      </div>
+      <div class="game-tab" onclick="showGame('flipcup', this)">
+        <span class="game-tab-icon">🍺</span>
+        <span class="game-tab-name">Flip Cup</span>
+        <span class="badge badge-free">Free</span>
+      </div>
+      <div class="game-tab" onclick="showGame('kingscup', this)">
+        <span class="game-tab-icon">♠️</span>
+        <span class="game-tab-name">Kings Cup</span>
+        <span class="badge badge-free">Free</span>
+      </div>
+    </div>
+
+    <!-- ===== BEER PONG ===== -->
+    <div class="game-panel active" id="panel-beerpong">
+      <div class="tournament-header">
+        <h2>🏓 Beer Pong Tournament</h2>
+        <p>Starts at <strong>7:00 PM</strong>. 2-player teams, single elimination bracket. Sign up and pay your buy-in via Interac before the party — show up ready.</p>
+      </div>
+
+      <div class="rules-box">
+        <div class="rules-title">📋 Tournament Rules</div>
+        <div class="rules-grid">
+          <div class="rule-item"><span class="rule-icon">🔺</span><span class="rule-text"><strong>6 cups per side</strong> — standard triangle formation</span></div>
+          <div class="rule-item"><span class="rule-icon">🏓</span><span class="rule-text"><strong>2 shots per turn</strong> — one per player</span></div>
+          <div class="rule-item"><span class="rule-icon">🥤</span><span class="rule-text"><strong>Your drink, your choice</strong> — fill your cups with whatever you want</span></div>
+          <div class="rule-item"><span class="rule-icon">↔️</span><span class="rule-text"><strong>No leaning</strong> over the table when shooting</span></div>
+          <div class="rule-item"><span class="rule-icon">🔄</span><span class="rule-text"><strong>1 re-rack per game</strong> — call it whenever you want</span></div>
+          <div class="rule-item"><span class="rule-icon">🏀</span><span class="rule-text"><strong>Bounce shots = 2 cups</strong> — but can be swatted away</span></div>
+          <div class="rule-item"><span class="rule-icon">🎯</span><span class="rule-text"><strong>Same cup = 3 cups removed</strong> — if both players sink the same cup</span></div>
+          <div class="rule-item"><span class="rule-icon">🏆</span><span class="rule-text"><strong>First to sink all 6 cups wins</strong> — no overtime, no redemption</span></div>
+        </div>
+      </div>
+
+      <div class="prize-card">
+        <div class="prize-icon">🏆</div>
+        <div class="prize-info">
+          <h3>Winner Takes 50% of the Pot</h3>
+          <p>With 8 teams that's <strong>$80 cash</strong>. With 12 teams it's <strong>$120 cash</strong>. 50% to the winning team — the rest goes toward making this night legendary.</p>
+        </div>
+      </div>
+
+      <div class="buyin-notice">
+        <div class="buyin-notice-price">$20</div>
+        <div class="buyin-notice-text">Per team, both players. Send your e-transfer, register below — <strong>Eduardo reviews payments every 24 hours</strong> and confirms your spot within 24 hours. No need to message him separately.</div>
+      </div>
+
+      <div class="interac-mini">
+        <div class="interac-mini-label">Pay via Interac</div>
+        <div class="interac-mini-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="98fdfcedf9eafcf7b6f5f7f6ecfdebfcfdf7fbf9aaa8a8d8fff5f9f1f4b6fbf7f5">[email&#160;protected]</a></div>
+        <div class="interac-mini-note">Reference: Team name + Beer Pong + amount · e.g. "The Legends — Beer Pong — $20"</div>
+      </div>
+
+      <!-- Live pot -->
+      <div class="game-pot" id="bp-pot">
+        <div>
+          <div class="game-pot-label">Current Pot</div>
+          <div class="game-pot-amount">$<span id="bp-pot-total">0</span></div>
+        </div>
+        <div class="game-pot-split">
+          <div class="game-pot-split-line">🏆 Winner: $<span id="bp-pot-winner">0</span></div>
+          <div class="game-pot-split-line"><span id="bp-teams-count">0</span> teams registered</div>
+        </div>
+      </div>
+
+      <div class="signup-form">
+        <span class="form-label">Team Name</span>
+        <input class="form-input" id="bp-team" placeholder="Your team name…" />
+        <span class="form-label">Player 1</span>
+        <input class="form-input" id="bp-p1" placeholder="Player 1…" />
+        <span class="form-label">Player 2</span>
+        <input class="form-input" id="bp-p2" placeholder="Player 2…" />
+        <button class="form-btn gold" onclick="signUpBeerPong()">REGISTER OUR TEAM →</button>
+      </div>
+
+      <div class="list-section">
+        <h3>Teams Registered</h3>
+        <div id="bp-list"><div class="empty-state"><p>No teams yet. Be the first to sign up. 🏓</p></div></div>
+      </div>
+
+      <div class="bracket-section">
+        <h3>Bracket</h3>
+        <div id="bp-bracket"><p class="bracket-note">Bracket generates once teams are locked in at the party. 🎉</p></div>
+      </div>
+    </div>
+
+    <!-- ===== MARIO KART ===== -->
+    <div class="game-panel" id="panel-mariokart">
+      <div class="tournament-header">
+        <h2>🏎️ Mario Kart Tournament</h2>
+        <p>Starts at <strong>5:30 PM</strong> — the first big event of the night. Single elimination, 4 players per race. Sign up solo, bracket seeded at game time.</p>
+      </div>
+
+      <div class="rules-box">
+        <div class="rules-title">📋 Tournament Rules</div>
+        <div class="rules-grid">
+          <div class="rule-item"><span class="rule-icon">🏎️</span><span class="rule-text"><strong>150cc</strong> · Standard items · No CPUs</span></div>
+          <div class="rule-item"><span class="rule-icon">🎲</span><span class="rule-text"><strong>Random track</strong> — no picking, no advantages</span></div>
+          <div class="rule-item"><span class="rule-icon">👥</span><span class="rule-text"><strong>4 players per race</strong> — top 2 advance</span></div>
+          <div class="rule-item"><span class="rule-icon">⚡</span><span class="rule-text"><strong>1 race per matchup</strong> — fast and brutal</span></div>
+          <div class="rule-item"><span class="rule-icon">🕹️</span><span class="rule-text"><strong>Joy-Con or Pro Controller</strong> — no motion controls</span></div>
+          <div class="rule-item"><span class="rule-icon">🚫</span><span class="rule-text"><strong>No character switching</strong> mid-tournament</span></div>
+        </div>
+      </div>
+
+      <div class="prize-card">
+        <div class="prize-icon">🏆</div>
+        <div class="prize-info">
+          <h3>Winner Takes 50% of the Pot</h3>
+          <p>With 16 racers that's <strong>$80 cash</strong>. With 20 it's <strong>$100 cash</strong>. 50% to the winner — the rest goes toward the night. Pay $10, take the wheel.</p>
+        </div>
+      </div>
+
+      <div class="buyin-notice">
+        <div class="buyin-notice-price">$10</div>
+        <div class="buyin-notice-text">Per racer. Send your e-transfer, register below — <strong>Eduardo reviews payments every 24 hours</strong> and confirms your spot within 24 hours. No need to message him separately.</div>
+      </div>
+
+      <div class="interac-mini">
+        <div class="interac-mini-label">Pay via Interac</div>
+        <div class="interac-mini-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a0c5c4d5c1d2c4cf8ecdcfced4c5d3c4c5cfc3c1929090e0c7cdc1c9cc8ec3cfcd">[email&#160;protected]</a></div>
+        <div class="interac-mini-note">Reference: Your name + Mario Kart + amount · e.g. "Carlos — Mario Kart — $10"</div>
+      </div>
+
+      <!-- Live pot -->
+      <div class="game-pot" id="mk-pot">
+        <div>
+          <div class="game-pot-label">Current Pot</div>
+          <div class="game-pot-amount">$<span id="mk-pot-total">0</span></div>
+        </div>
+        <div class="game-pot-split">
+          <div class="game-pot-split-line">🏆 Winner: $<span id="mk-pot-winner">0</span></div>
+          <div class="game-pot-split-line"><span id="mk-racers-count">0</span> racers signed up</div>
+        </div>
+      </div>
+
+      <div class="signup-form">
+        <span class="form-label">Your name</span>
+        <input class="form-input" id="mk-name" placeholder="Your name…" />
+        <span class="form-label">Your go-to character</span>
+        <input class="form-input" id="mk-char" placeholder="Mario, Bowser, Toad… who are you?" />
+        <button class="form-btn gold" onclick="signUpMarioKart()">REGISTER ME →</button>
+      </div>
+
+      <div class="list-section">
+        <h3>Racers Signed Up</h3>
+        <div id="mk-list"><div class="empty-state"><p>No racers yet. Sign up and start the grid. 🏎️</p></div></div>
+      </div>
+    </div>
+
+    <!-- ===== FLIP CUP ===== -->
+    <div class="game-panel" id="panel-flipcup">
+      <div class="free-header">
+        <h2>🍺 Flip Cup</h2>
+        <span class="free-badge-inline">✓ Free to Play</span>
+        <p>Team relay race. Drink. Flip. Win. Sign up as an individual — teams balanced at game time. No buy-in, just vibes.</p>
+      </div>
+
+      <div class="signup-form">
+        <span class="form-label">Your name</span>
+        <input class="form-input" id="fc-name" placeholder="Your name…" />
+        <button class="form-btn" onclick="signUpFree('flipcup', 'fc-name', 'fc-list')">I'M IN →</button>
+      </div>
+
+      <div class="list-section">
+        <h3>Players In</h3>
+        <div id="fc-list"><div class="empty-state"><p>No sign-ups yet. 🍺</p></div></div>
+      </div>
+    </div>
+
+    <!-- ===== KINGS CUP ===== -->
+    <div class="game-panel" id="panel-kingscup">
+      <div class="free-header">
+        <h2>♠️ Kings Cup</h2>
+        <span class="free-badge-inline">✓ Free to Play</span>
+        <p>Cards. Rules. Chaos. Sign up to join a table — max 8 per round. No buy-in needed.</p>
+      </div>
+
+      <div class="signup-form">
+        <span class="form-label">Your name</span>
+        <input class="form-input" id="kc-name" placeholder="Your name…" />
+        <button class="form-btn" onclick="signUpFree('kingscup', 'kc-name', 'kc-list')">DEAL ME IN →</button>
+      </div>
+
+      <div class="list-section">
+        <h3>Players In</h3>
+        <div id="kc-list"><div class="empty-state"><p>No sign-ups yet. ♠️</p></div></div>
+      </div>
+    </div>
+
+    <div class="footer"><p>Eduardo's Birthday · April 11th 2026 · Toronto</p></div>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    const data = { beerpong: [], mariokart: [], flipcup: [], kingscup: [] };
+
+    function showGame(game, el) {
+      document.querySelectorAll('.game-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.game-panel').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('panel-' + game).classList.add('active');
+    }
+
+    function signUpBeerPong() {
+      const team = document.getElementById('bp-team').value.trim();
+      const p1 = document.getElementById('bp-p1').value.trim();
+      const p2 = document.getElementById('bp-p2').value.trim();
+      if (!team || !p1 || !p2) return;
+      data.beerpong.push({ team, p1, p2 });
+      document.getElementById('bp-team').value = '';
+      document.getElementById('bp-p1').value = '';
+      document.getElementById('bp-p2').value = '';
+      renderBeerPong();
+    }
+
+    function renderBeerPong() {
+      const teams = data.beerpong;
+      const total = teams.length * 20;
+      const winner = Math.floor(total / 2);
+      document.getElementById('bp-pot-total').textContent = total;
+      document.getElementById('bp-pot-winner').textContent = winner;
+      document.getElementById('bp-teams-count').textContent = teams.length;
+
+      const list = document.getElementById('bp-list');
+      if (!teams.length) { list.innerHTML = '<div class="empty-state"><p>No teams yet. 🏓</p></div>'; return; }
+      list.innerHTML = teams.map((t, i) => `
+        <div class="team-item">
+          <div class="team-seed">${i + 1}</div>
+          <div>
+            <div class="team-name">${t.team}</div>
+            <div class="team-players">${t.p1} & ${t.p2}</div>
+          </div>
+          <div class="team-paid">$10 ✓</div>
+        </div>`).join('');
+
+      const bracket = document.getElementById('bp-bracket');
+      if (teams.length < 2) { bracket.innerHTML = '<p class="bracket-note">Need at least 2 teams to show bracket.</p>'; return; }
+      let html = '';
+      for (let i = 0; i < teams.length; i += 2) {
+        const t1 = teams[i], t2 = teams[i+1];
+        html += `<div class="match-card"><div class="match-label">Match ${Math.floor(i/2)+1}</div><div class="match-team">🏓 ${t1.team}</div><div class="match-vs">vs</div><div class="match-team">🏓 ${t2 ? t2.team : '<span style="opacity:0.4;font-style:italic">BYE</span>'}</div></div>`;
+      }
+      bracket.innerHTML = html;
+    }
+
+    function signUpMarioKart() {
+      const name = document.getElementById('mk-name').value.trim();
+      const char = document.getElementById('mk-char').value.trim();
+      if (!name) return;
+      data.mariokart.push({ name, char: char || '?' });
+      document.getElementById('mk-name').value = '';
+      document.getElementById('mk-char').value = '';
+      renderMarioKart();
+    }
+
+    function renderMarioKart() {
+      const racers = data.mariokart;
+      const total = racers.length * 10;
+      const winner = Math.floor(total / 2);
+      document.getElementById('mk-pot-total').textContent = total;
+      document.getElementById('mk-pot-winner').textContent = winner;
+      document.getElementById('mk-racers-count').textContent = racers.length;
+
+      const list = document.getElementById('mk-list');
+      if (!racers.length) { list.innerHTML = '<div class="empty-state"><p>No racers yet. 🏎️</p></div>'; return; }
+      list.innerHTML = racers.map((r, i) => `
+        <div class="player-item">
+          <div class="player-num">${i + 1}</div>
+          <div class="player-name">${r.name}</div>
+          <div style="font-size:11px;color:rgba(0,212,255,0.4);">${r.char} · $10 ✓</div>
+        </div>`).join('');
+    }
+
+    function signUpFree(game, inputId, listId) {
+      const name = document.getElementById(inputId).value.trim();
+      if (!name) re
