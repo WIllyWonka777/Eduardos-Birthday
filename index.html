@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Eduardo's Birthday — Main Character Energy</title>
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Eduardo's Birthday 🎬 April 11th" />
+  <meta property="og:description" content="Main Character Energy. April 11th · 5PM · 70 Princess St, Party Room A, 11th Floor. Dress the part. Show up. Be legendary." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cyan: #00d4ff;
+      --cyan-dim: rgba(0,212,255,0.12);
+      --cyan-border: rgba(0,212,255,0.25);
+      --cyan-glow: rgba(0,212,255,0.15);
+      --navy: #050c18;
+      --navy2: #080f1e;
+      --navy-mid: #0d1828;
+      --navy-mid2: #111f30;
+      --cream: #d6eaf8;
+      --red: #ff4444;
+      --gold: #f5c518;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--navy);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,212,255,0.012) 3px, rgba(0,212,255,0.012) 4px);
+      pointer-events: none; z-index: 99;
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,100,180,0.12) 0%, transparent 65%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .film-strip-left, .film-strip-right {
+      position: fixed; top: 0; bottom: 0; width: 28px;
+      background: var(--navy2);
+      border-right: 1px solid rgba(0,212,255,0.12);
+      z-index: 10; display: flex; flex-direction: column;
+      justify-content: space-around; align-items: center; padding: 10px 0;
+    }
+    .film-strip-right { right: 0; left: auto; border-right: none; border-left: 1px solid rgba(0,212,255,0.12); }
+    .film-hole { width: 12px; height: 16px; background: var(--navy); border-radius: 2px; border: 1px solid rgba(0,212,255,0.18); flex-shrink: 0; }
+
+    .container { max-width: 460px; margin: 0 auto; padding: 0 44px; position: relative; z-index: 2; }
+
+    .nav { display: flex; gap: 6px; padding: 14px 0 0; }
+    .nav a { flex: 1; padding: 9px 4px; background: var(--navy-mid); border: 1px solid var(--cyan-border); color: rgba(0,212,255,0.4); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; text-align: center; transition: all 0.2s ease; }
+    .nav a:hover, .nav a.active { background: var(--cyan); color: var(--navy); font-weight: 700; }
+    .nav a:not(.active) { animation: navPulse 3s 2s ease-in-out 3; }
+    @keyframes navPulse { 0%,100%{border-color:rgba(0,212,255,0.25);} 50%{border-color:rgba(0,212,255,0.8);box-shadow:0 0 8px rgba(0,212,255,0.2);} }
+
+    .hero { padding: 24px 0 0; text-align: center; }
+    .now-playing { display: inline-block; background: var(--red); color: white; font-size: 9px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; padding: 5px 14px; margin-bottom: 12px; animation: blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%,88%,100%{opacity:1;} 94%{opacity:0.2;} }
+
+    .hero-character { display: flex; justify-content: center; margin-bottom: 4px; }
+    .hero-svg {
+      width: 210px; height: 340px;
+      animation: heroFloat 3.5s ease-in-out infinite, heroReveal 1s 0.2s ease both;
+      filter: drop-shadow(0 0 22px rgba(0,212,255,0.18)) drop-shadow(0 0 6px rgba(0,150,220,0.12)) drop-shadow(0 14px 44px rgba(0,0,0,0.95));
+    }
+    @keyframes heroFloat { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-11px);} }
+    @keyframes heroReveal { from{opacity:0;transform:translateY(36px) scale(0.88);} to{opacity:1;transform:translateY(0) scale(1);} }
+    .cape-anim { animation: capeWave 2.8s ease-in-out infinite; transform-origin: 100px 155px; }
+    @keyframes capeWave { 0%,100%{transform:skewX(0) scaleX(1);} 30%{transform:skewX(2deg) scaleX(1.02);} 70%{transform:skewX(-2deg) scaleX(0.98);} }
+    .emblem-glow { animation: emblemPulse 2.2s ease-in-out infinite; }
+    @keyframes emblemPulse { 0%,100%{filter:drop-shadow(0 0 3px rgba(0,212,255,0.4));} 50%{filter:drop-shadow(0 0 12px rgba(0,212,255,0.95));} }
+    .eye-glow { animation: eyePulse 3s ease-in-out infinite; }
+    @keyframes eyePulse { 0%,100%{opacity:0.85;} 50%{opacity:1; filter:drop-shadow(0 0 4px rgba(255,255,255,0.8));} }
+    .sparkle-a { animation: sp 1.8s 0s ease-in-out infinite; }
+    .sparkle-b { animation: sp 1.8s 0.6s ease-in-out infinite; }
+    .sparkle-c { animation: sp 1.8s 1.2s ease-in-out infinite; }
+    @keyframes sp { 0%,100%{opacity:0.1;transform:scale(0.6);} 50%{opacity:1;transform:scale(1.4);} }
+
+    .main-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(58px,15vw,82px); color: var(--cream); line-height: 0.88; letter-spacing: 3px; display: block; }
+    .main-title .highlight { color: var(--cyan); text-shadow: 0 0 24px rgba(0,212,255,0.5); }
+    .subtitle-line { font-family: 'Bebas Neue', sans-serif; font-size: clamp(18px,5vw,26px); color: rgba(0,212,255,0.7); letter-spacing: 6px; margin-top: 6px; }
+
+    .rating-bar { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 18px 0; animation: fadeUp 0.8s 0.3s ease both; opacity: 0; }
+    .rating-score { background: var(--cyan); color: var(--navy); font-family: 'Bebas Neue', sans-serif; font-size: 28px; padding: 4px 10px; }
+    .rating-text { font-size: 11px; color: rgba(0,212,255,0.4); letter-spacing: 2px; text-transform: uppercase; line-height: 1.5; }
+    .stars { color: var(--cyan); font-size: 13px; letter-spacing: 2px; }
+
+    .divider { display: flex; align-items: center; gap: 10px; margin: 18px 0; animation: fadeUp 0.8s 0.35s ease both; opacity: 0; }
+    .divider-line { flex: 1; height: 1px; background: var(--cyan-border); }
+    .divider-icon { color: var(--cyan); font-size: 15px; }
+
+    .tagline { text-align: center; margin-bottom: 22px; animation: fadeUp 0.8s 0.4s ease both; opacity: 0; }
+    .tagline p { font-size: 14px; font-style: italic; color: rgba(214,234,248,0.6); line-height: 1.75; font-weight: 300; }
+
+    .info-box { background: var(--navy-mid); border: 1px solid var(--cyan-border); border-left: 3px solid var(--cyan); padding: 18px 20px; margin-bottom: 16px; animation: fadeUp 0.8s 0.5s ease both; opacity: 0; }
+    .info-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 13px; }
+    .info-row:last-child { margin-bottom: 0; }
+    .info-icon { font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+    .info-label { font-size: 8px; letter-spacing: 3px; color: var(--cyan); text-transform: uppercase; margin-bottom: 2px; font-weight: 600; }
+    .info-value { font-size: 16px; color: var(--cream); font-weight: 400; line-height: 1.2; }
+    .info-sub { font-size: 10px; color: rgba(0,212,255,0.3); margin-top: 2px; }
+
+    .dress-code { background: var(--navy-mid); border: 1px solid var(--cyan-border); border-left: 3px solid var(--red); padding: 16px 20px; margin-bottom: 16px; animation: fadeUp 0.8s 0.55s ease both; opacity: 0; }
+    .dress-code h3 { font-family: 'Bebas Neue', sans-serif; font-size: 17px; letter-spacing: 2px; color: var(--cream); margin-bottom: 5px; }
+    .dress-code h3 span { color: var(--cyan); }
+    .dress-code p { font-size: 12px; color: rgba(214,234,248,0.5); line-height: 1.6; }
+    .dress-optional { display: inline-block; background: var(--cyan-dim); border: 1px solid var(--cyan-border); color: var(--cyan); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; padding: 3px 10px; margin-top: 8px; }
+
+    .perks { display: flex; gap: 6px; margin-bottom: 16px; animation: fadeUp 0.8s 0.6s ease both; opacity: 0; }
+    .perk { flex: 1; background: var(--navy-mid); border: 1px solid var(--cyan-border); padding: 12px 8px; text-align: center; }
+    .perk-icon { font-size: 20px; margin-bottom: 5px; }
+    .perk-label { font-size: 8px; letter-spacing: 2px; color: rgba(0,212,255,0.4); text-transform: uppercase; line-height: 1.4; }
+
+    .quick-links { display: flex; gap: 8px; margin-bottom: 20px; animation: fadeUp 0.8s 0.65s ease both; opacity: 0; }
+    .quick-link { flex: 1; padding: 13px 8px; background: var(--navy-mid); border: 1px solid var(--cyan-border); text-decoration: none; text-align: center; transition: all 0.2s ease; }
+    .quick-link:hover { background: var(--cyan-dim); border-color: var(--cyan); }
+    .quick-link-icon { font-size: 20px; margin-bottom: 4px; }
+    .quick-link-label { font-size: 8px; letter-spacing: 2px; color: rgba(0,212,255,0.4); text-transform: uppercase; line-height: 1.4; display: block; }
+    .quick-link-title { font-family: 'Bebas Neue', sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--cream); }
+
+    .rsvp-title { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 3px; color: var(--cream); text-align: center; margin-bottom: 14px; animation: fadeUp 0.8s 0.7s ease both; opacity: 0; }
+    .rsvp-title span { color: var(--cyan); }
+    .rsvp-section { animation: fadeUp 0.8s 0.75s ease both; opacity: 0; }
+    .rsvp-label { font-size: 8px; letter-spacing: 3px; color: var(--cyan); text-transform: uppercase; margin-bottom: 7px; display: block; font-weight: 600; }
+    .rsvp-input { width: 100%; padding: 11px 13px; background: var(--navy-mid2); border: 1px solid var(--cyan-border); border-bottom: 2px solid rgba(0,212,255,0.2); color: var(--cream); font-family: 'DM Sans', sans-serif; font-size: 14px; margin-bottom: 13px; transition: border-color 0.2s ease; outline: none; }
+    .rsvp-input:focus { border-bottom-color: var(--cyan); }
+    .rsvp-input::placeholder { color: rgba(0,212,255,0.2); font-style: italic; }
+    .rsvp-input.textarea { resize: none; height: 72px; }
+    .choice-group { display: flex; gap: 7px; margin-bottom: 13px; flex-wrap: wrap; }
+    .choice-btn { flex: 1; min-width: 100px; padding: 10px 8px; font-family: 'DM Sans', sans-serif; font-size: 9px; font-weight: 500; letter-spacing: 1.5px; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; background: var(--navy-mid); border: 1px solid var(--cyan-border); color: rgba(0,212,255,0.35); text-align: center; }
+    .choice-btn.selected { background: var(--cyan); border-color: var(--cyan); color: var(--navy); font-weight: 700; }
+    .submit-btn { width: 100%; padding: 15px; background: var(--cyan); border: none; color: var(--navy); font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 4px; cursor: pointer; transition: all 0.25s ease; margin-top: 4px; font-weight: 900; }
+    .submit-btn:active { opacity: 0.8; transform: scale(0.99); }
+    .error-msg { font-size: 9px; letter-spacing: 1.5px; color: var(--red); text-align: center; margin-bottom: 9px; display: none; }
+    .rsvp-success { display: none; text-align: center; padding: 26px 14px; background: var(--navy-mid); border-left: 3px solid var(--cyan); }
+    .rsvp-success h3 { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 3px; color: var(--cyan); margin-bottom: 7px; }
+    .rsvp-success p { font-size: 13px; color: rgba(214,234,248,0.55); line-height: 1.6; }
+
+    .footer { text-align: center; padding: 24px 0 44px; }
+    .footer p { font-size: 8px; letter-spacing: 3px; color: rgba(0,212,255,0.12); text-transform: uppercase; }
+
+
+    .schedule-box { background: var(--navy-mid); border: 1px solid var(--cyan-border); border-left: 3px solid var(--cyan); padding: 18px 20px; margin-bottom: 16px; animation: fadeUp 0.8s 0.52s ease both; opacity: 0; }
+    .schedule-title { font-family: "Bebas Neue", sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--cream); margin-bottom: 16px; }
+    .schedule-item { display: flex; align-items: flex-start; gap: 0; margin-bottom: 0; position: relative; }
+    .schedule-item:not(.last)::after { content: ""; position: absolute; left: 72px; top: 22px; bottom: -8px; width: 1px; background: rgba(0,212,255,0.15); }
+    .schedule-time { font-family: "Bebas Neue", sans-serif; font-size: 13px; color: rgba(0,212,255,0.5); width: 60px; flex-shrink: 0; padding-top: 3px; letter-spacing: 1px; }
+    .schedule-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(0,212,255,0.3); border: 1.5px solid rgba(0,212,255,0.4); flex-shrink: 0; margin: 4px 12px 0; }
+    .schedule-dot.active { background: var(--cyan); border-color: var(--cyan); box-shadow: 0 0 8px rgba(0,212,255,0.5); }
+    .schedule-dot.gold { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 8px rgba(245,197,24,0.5); }
+    .schedule-desc { font-size: 12px; color: rgba(214,234,248,0.55); line-height: 1.5; padding-bottom: 14px; }
+    .schedule-desc strong { color: var(--cream); font-weight: 500; }
+
+    .gift-note { background: var(--navy-mid); border: 1px solid var(--cyan-border); border-left: 3px solid var(--gold); padding: 16px 18px; margin-bottom: 16px; display: flex; gap: 14px; align-items: flex-start; animation: fadeUp 0.8s 0.63s ease both; opacity: 0; }
+    .gift-note-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+    .gift-note-text p { font-size: 12px; color: rgba(214,234,248,0.55); line-height: 1.65; margin-bottom: 8px; }
+    .gift-note-text p:last-child { margin-bottom: 0; }
+
+    .explore-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; animation: fadeUp 0.8s 0.64s ease both; opacity: 0; }
+    .explore-line { flex: 1; height: 1px; background: var(--cyan-border); }
+    .explore-title { font-family: "Bebas Neue", sans-serif; font-size: 13px; letter-spacing: 4px; color: rgba(0,212,255,0.5); white-space: nowrap; }
+    .explore-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; animation: fadeUp 0.8s 0.66s ease both; opacity: 0; }
+    .explore-card { background: var(--navy-mid); border: 1px solid var(--cyan-border); padding: 16px 18px; text-decoration: none; transition: all 0.25s ease; display: block; position: relative; overflow: hidden; }
+    .explore-card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,212,255,0.03) 0%, transparent 60%); pointer-events: none; }
+    .explore-card:hover { border-color: var(--cyan); background: rgba(0,212,255,0.05); transform: translateX(3px); }
+    .explore-card:nth-child(2) { border-left: 3px solid var(--gold); }
+    .explore-card:nth-child(2):hover { border-color: var(--gold); background: rgba(245,197,24,0.04); }
+    .explore-card:nth-child(1) { border-left: 3px solid var(--cyan); }
+    .explore-card:nth-child(3) { border-left: 3px solid rgba(255,100,100,0.6); }
+    .explore-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .explore-card-icon { font-size: 22px; }
+    .explore-card-badge { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; padding: 3px 10px; font-weight: 700; }
+    .explore-badge-paid { background: rgba(0,212,255,0.15); color: var(--cyan); border: 1px solid rgba(0,212,255,0.3); }
+    .explore-badge-raffle { background: rgba(245,197,24,0.15); color: var(--gold); border: 1px solid rgba(245,197,24,0.3); }
+    .explore-badge-vote { background: rgba(255,100,100,0.12); color: rgba(255,150,150,0.8); border: 1px solid rgba(255,100,100,0.25); }
+    .explore-card-title { font-family: "Bebas Neue", sans-serif; font-size: 22px; letter-spacing: 2px; color: var(--cream); margin-bottom: 5px; }
+    .explore-card-desc { font-size: 12px; color: rgba(214,234,248,0.5); line-height: 1.6; margin-bottom: 10px; }
+    .explore-card-cta { font-family: "Bebas Neue", sans-serif; font-size: 13px; letter-spacing: 2px; color: var(--cyan); }
+    .explore-card:nth-child(2) .explore-card-cta { color: var(--gold); }
+
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+  </style>
+</head>
+<body>
+  <div class="film-strip-left">
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  </div>
+  <div class="film-strip-right">
+    <div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div>
+  </div>
+
+  <div class="container">
+    <nav class="nav">
+      <a href="index.html" class="active">🎬 Invite</a>
+      <a href="games.html">🎮 Games</a>
+      <a href="vote.html">🏆 Vote</a>
+      <a href="raffle.html">🎟️ Raffle</a>
+    </nav>
+
+    <div class="hero">
+      <div class="now-playing">🔴 Now Casting</div>
+
+      <div class="hero-character">
+        <svg class="hero-svg" viewBox="0 0 200 340" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="skin" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#c8804a"/>
+              <stop offset="100%" style="stop-color:#8a5020"/>
+            </linearGradient>
+            <linearGradient id="jawSkin" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#b06830"/>
+              <stop offset="100%" style="stop-color:#7a4215"/>
+            </linearGradient>
+            <linearGradient id="suit" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#0a1828"/>
+              <stop offset="100%" style="stop-color:#030810"/>
+            </linearGradient>
+            <linearGradient id="suitMid" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#030810"/>
+              <stop offset="42%" style="stop-color:#102035"/>
+              <stop offset="100%" style="stop-color:#030810"/>
+            </linearGradient>
+            <linearGradient id="cape" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#060f1c"/>
+              <stop offset="100%" style="stop-color:#020610"/>
+            </linearGradient>
+            <linearGradient id="capeIn" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#0a1a2e"/>
+              <stop offset="50%" style="stop-color:#050d1a"/>
+              <stop offset="100%" style="stop-color:#0a1a2e"/>
+            </linearGradient>
+            <linearGradient id="mask" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" style="stop-color:#0a1828"/>
+              <stop offset="100%" style="stop-color:#020810"/>
+            </linearGradient>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="2" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="eyeFilter">
+              <feGaussianBlur stdDeviation="1.5" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- Ground glow -->
+          <ellipse cx="100" cy="332" rx="52" ry="7" fill="rgba(0,212,255,0.07)"/>
+
+          <!-- ===== CAPE — from shoulders down ===== -->
+          <g class="cape-anim">
+            <path d="M63 155 Q28 202 22 282 Q56 266 100 273 Q144 266 178 282 Q172 202 137 155 Q120 148 100 147 Q80 148 63 155Z" fill="url(#cape)"/>
+            <path d="M70 159 Q42 202 38 270 Q68 256 100 262 Q132 256 162 270 Q158 202 130 159 Q115 153 100 151 Q85 153 70 159Z" fill="url(#capeIn)" opacity="0.6"/>
+            <path d="M63 155 Q30 202 24 282" stroke="rgba(0,212,255,0.1)" stroke-width="1.5" fill="none"/>
+            <path d="M137 155 Q170 202 176 282" stroke="rgba(0,212,255,0.1)" stroke-width="1.5" fill="none"/>
+            <path d="M100 151 L100 273" stroke="rgba(0,212,255,0.05)" stroke-width="1" fill="none"/>
+          </g>
+
+          <!-- ===== LEGS ===== -->
+          <rect x="75" y="244" width="21" height="66" rx="9" fill="url(#suit)"/>
+          <rect x="104" y="244" width="21" height="66" rx="9" fill="url(#suit)"/>
+          <ellipse cx="85" cy="262" rx="6" ry="13" fill="rgba(0,212,255,0.04)"/>
+          <ellipse cx="115" cy="262" rx="6" ry="13" fill="rgba(0,212,255,0.04)"/>
+          <!-- Boots -->
+          <rect x="71" y="291" width="29" height="23" rx="7" fill="#020810"/>
+          <rect x="100" y="291" width="29" height="23" rx="7" fill="#020810"/>
+          <rect x="71" y="291" width="29" height="5" rx="2" fill="rgba(0,212,255,0.4)"/>
+          <rect x="100" y="291" width="29" height="5" rx="2" fill="rgba(0,212,255,0.4)"/>
+
+          <!-- ===== TORSO ===== -->
+          <path d="M55 156 Q54 242 66 249 L134 249 Q146 242 145 156 Q122 145 100 144 Q78 145 55 156Z" fill="url(#suit)"/>
+          <path d="M55 156 Q54 242 66 249 L134 249 Q146 242 145 156 Q122 145 100 144 Q78 145 55 156Z" fill="url(#suitMid)" opacity="0.75"/>
+
+          <!-- Pecs -->
+          <ellipse cx="80" cy="171" rx="19" ry="13" fill="rgba(0,20,40,0.7)"/>
+          <ellipse cx="120" cy="171" rx="19" ry="13" fill="rgba(0,20,40,0.7)"/>
+          <path d="M63 163 Q80 155 97 163" stroke="rgba(0,212,255,0.1)" stroke-width="2" fill="none"/>
+          <path d="M103 163 Q120 155 137 163" stroke="rgba(0,212,255,0.1)" stroke-width="2" fill="none"/>
+
+          <!-- Serratus -->
+          <path d="M60 196 Q66 199 70 204" stroke="rgba(0,212,255,0.08)" stroke-width="1.5" fill="none"/>
+          <path d="M60 207 Q66 210 70 215" stroke="rgba(0,212,255,0.08)" stroke-width="1.5" fill="none"/>
+          <path d="M140 196 Q134 199 130 204" stroke="rgba(0,212,255,0.08)" stroke-width="1.5" fill="none"/>
+          <path d="M140 207 Q134 210 130 215" stroke="rgba(0,212,255,0.08)" stroke-width="1.5" fill="none"/>
+
+          <!-- Six pack -->
+          <rect x="86" y="188" width="12" height="10" rx="3.5" fill="rgba(0,15,35,0.65)"/>
+          <rect x="102" y="188" width="12" height="10" rx="3.5" fill="rgba(0,15,35,0.65)"/>
+          <rect x="86" y="201" width="12" height="10" rx="3.5" fill="rgba(0,15,35,0.65)"/>
+          <rect x="102" y="201" width="12" height="10" rx="3.5" fill="rgba(0,15,35,0.65)"/>
+          <rect x="86" y="214" width="12" height="10" rx="3.5" fill="rgba(0,15,35,0.65)"/>
+          <rect x="102" y="214" width="12" height="10" rx="3.5" fill="rgba(0,15,35,0.65)"/>
+          <line x1="100" y1="163" x2="100" y2="242" stroke="rgba(0,212,255,0.05)" stroke-width="1.5"/>
+
+          <!-- ===== CHEST EMBLEM — cyan shield ===== -->
+          <g class="emblem-glow" filter="url(#glow)">
+            <path d="M100 157 L118 163 L118 178 Q118 188 100 194 Q82 188 82 178 L82 163 Z" fill="rgba(5,12,25,0.92)" stroke="rgba(0,212,255,0.85)" stroke-width="1.8"/>
+            <path d="M100 160 L115 165 L115 178 Q115 185 100 190 Q85 185 85 178 L85 165 Z" fill="rgba(0,212,255,0.06)"/>
+            <!-- Clean E -->
+            <rect x="92" y="165" width="14" height="2.8" rx="1" fill="#00d4ff"/>
+            <rect x="92" y="165" width="2.8" height="16" rx="1" fill="#00d4ff"/>
+            <rect x="92" y="172.6" width="10" height="2.8" rx="1" fill="#00d4ff"/>
+            <rect x="92" y="178.2" width="14" height="2.8" rx="1" fill="#00d4ff"/>
+            <path d="M100 157 L118 163 L118 178 Q118 188 100 194 Q82 188 82 178 L82 163 Z" fill="none" stroke="rgba(0,212,255,0.18)" stroke-width="5"/>
+          </g>
+
+          <!-- ===== BELT ===== -->
+          <rect x="57" y="239" width="86" height="14" rx="5" fill="#030c18"/>
+          <rect x="57" y="239" width="86" height="3" rx="1.5" fill="rgba(0,212,255,0.28)"/>
+          <rect x="57" y="250" width="86" height="3" rx="1.5" fill="rgba(0,212,255,0.18)"/>
+          <rect x="61" y="241" width="15" height="9" rx="2" fill="#040e1c"/>
+          <rect x="124" y="241" width="15" height="9" rx="2" fill="#040e1c"/>
+          <!-- Gold buckle clean -->
+          <rect x="87" y="240" width="26" height="12" rx="3" fill="#b8860a" opacity="0.88"/>
+          <rect x="89" y="242" width="22" height="8" rx="2" fill="#d4a010" opacity="0.65"/>
+          <ellipse cx="100" cy="246" rx="5" ry="3.5" fill="rgba(255,215,50,0.3)"/>
+
+          <!-- ===== SHOULDERS ===== -->
+          <ellipse cx="57" cy="159" rx="23" ry="27" fill="url(#suit)"/>
+          <ellipse cx="143" cy="159" rx="23" ry="27" fill="url(#suit)"/>
+          <ellipse cx="57" cy="148" rx="20" ry="9" fill="rgba(0,30,60,0.8)" stroke="rgba(0,212,255,0.18)" stroke-width="1"/>
+          <ellipse cx="143" cy="148" rx="20" ry="9" fill="rgba(0,30,60,0.8)" stroke="rgba(0,212,255,0.18)" stroke-width="1"/>
+          <path d="M40 152 Q57 144 74 152" stroke="rgba(0,212,255,0.15)" stroke-width="2" fill="none"/>
+          <path d="M126 152 Q143 144 160 152" stroke="rgba(0,212,255,0.15)" stroke-width="2" fill="none"/>
+
+          <!-- ===== ARMS ===== -->
+          <path d="M55 155 Q26 173 22 208 Q28 222 40 217 Q50 187 63 168Z" fill="url(#suit)"/>
+          <path d="M22 208 Q17 230 20 246 Q32 252 43 244 Q46 224 40 217Z" fill="#040c1a"/>
+          <ellipse cx="36" cy="186" rx="9" ry="19" fill="rgba(0,25,50,0.4)"/>
+          <path d="M17 247 Q20 260 31 262 Q43 260 46 246 Q40 241 31 241 Q23 241 17 247Z" fill="url(#skin)"/>
+          <path d="M20 253 Q29 249 39 253" stroke="rgba(100,50,10,0.35)" stroke-width="1" fill="none"/>
+          <rect x="17" y="243" width="30" height="4" rx="2" fill="rgba(0,212,255,0.38)"/>
+
+          <path d="M145 155 Q174 173 178 208 Q172 222 160 217 Q150 187 137 168Z" fill="url(#suit)"/>
+          <path d="M178 208 Q183 230 180 246 Q168 252 157 244 Q154 224 160 217Z" fill="#040c1a"/>
+          <ellipse cx="164" cy="186" rx="9" ry="19" fill="rgba(0,25,50,0.4)"/>
+          <path d="M154 242 Q153 255 163 260 Q175 258 183 247 Q180 240 171 240 Q161 240 154 242Z" fill="url(#skin)" transform="rotate(-12 168 250)"/>
+          <path d="M157 250 Q165 246 173 250" stroke="rgba(100,50,10,0.35)" stroke-width="1" fill="none" transform="rotate(-12 165 250)"/>
+          <rect x="153" y="239" width="30" height="4" rx="2" fill="rgba(0,212,255,0.38)" transform="rotate(-12 168 241)"/>
+
+          <!-- ===== NECK ===== -->
+          <rect x="88" y="128" width="24" height="22" rx="10" fill="url(#skin)"/>
+
+          <!-- ===== HEAD — chiseled jaw ===== -->
+          <path d="M66 108 Q66 82 100 76 Q134 82 134 108 Q132 130 120 141 Q110 148 100 150 Q90 148 80 141 Q68 130 66 108Z" fill="url(#skin)"/>
+          <!-- Jaw shadow line -->
+          <path d="M68 116 Q72 134 82 143 Q90 149 100 151 Q110 149 118 143 Q128 134 132 116" stroke="rgba(70,30,5,0.22)" stroke-width="2.5" fill="none"/>
+
+          <!-- Dark hair -->
+          <path d="M66 108 Q67 82 100 76 Q133 82 134 108 Q128 90 100 87 Q72 90 66 108Z" fill="#140c06"/>
+          <path d="M66 108 Q62 90 64 80 Q68 70 74 73 Q70 84 71 96Z" fill="#140c06"/>
+          <path d="M134 108 Q138 90 136 80 Q132 70 126 73 Q130 84 129 96Z" fill="#140c06"/>
+          <path d="M72 82 Q86 77 100 76 Q114 77 128 82" stroke="#1e1208" stroke-width="1.5" fill="none"/>
+
+          <!-- ===== BATMAN MASK ===== -->
+          <path d="M66 108 Q67 84 100 80 Q133 84 134 108 Q130 122 118 127 Q108 121 100 121 Q92 121 82 127 Q70 122 66 108Z" fill="url(#mask)"/>
+          <!-- Mask side coverage -->
+          <path d="M66 108 Q60 114 62 122 Q66 128 72 124 Q69 118 70 111Z" fill="url(#mask)"/>
+          <path d="M134 108 Q140 114 138 122 Q133 128 128 124 Q131 118 130 111Z" fill="url(#mask)"/>
+
+          <!-- Bat ears -->
+          <polygon points="76,84 64,54 88,76" fill="url(#mask)"/>
+          <polygon points="124,84 136,54 112,76" fill="url(#mask)"/>
+          <line x1="68" y1="61" x2="76" y2="84" stroke="rgba(0,212,255,0.18)" stroke-width="1.2"/>
+          <line x1="132" y1="61" x2="124" y2="84" stroke="rgba(0,212,255,0.18)" stroke-width="1.2"/>
+
+          <!-- ===== EYES — white Batman slits, no bulge ===== -->
+          <g class="eye-glow" filter="url(#eyeFilter)">
+            <!-- Left eye slit -->
+            <path d="M72 99 Q76 95 83 95 Q90 95 93 99 Q90 103 83 103 Q76 103 72 99Z" fill="white"/>
+            <!-- Right eye slit -->
+            <path d="M107 99 Q110 95 117 95 Q124 95 128 99 Q124 103 117 103 Q110 103 107 99Z" fill="white"/>
+            <!-- Subtle inner glow on slits -->
+            <path d="M73 99 Q76 96 83 96 Q90 96 92 99" stroke="rgba(0,212,255,0.4)" stroke-width="0.8" fill="none"/>
+            <path d="M108 99 Q111 96 117 96 Q123 96 127 99" stroke="rgba(0,212,255,0.4)" stroke-width="0.8" fill="none"/>
+          </g>
+
+          <!-- Eyebrows — visible above slits, dark -->
+          <path d="M72 93 Q82 89 92 92" stroke="#120a04" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M108 92 Q118 89 128 93" stroke="#120a04" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+          <!-- ===== NOSE ===== -->
+          <path d="M97 110 Q100 116 103 110" stroke="rgba(90,45,10,0.4)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <ellipse cx="97" cy="113" rx="2" ry="1.2" fill="rgba(80,35,5,0.18)"/>
+          <ellipse cx="103" cy="113" rx="2" ry="1.2" fill="rgba(80,35,5,0.18)"/>
+
+          <!-- Philtrum skin gap -->
+          <ellipse cx="100" cy="121" rx="10" ry="5" fill="url(#skin)" opacity="0.95"/>
+
+          <!-- ===== MUSTACHE ===== -->
+          <path d="M88 119 Q93 115 97 118 Q100 120 103 118 Q107 115 112 119 Q108 123 100 122 Q92 123 88 119Z" fill="#1a0e06"/>
+
+          <!-- ===== LIPS ===== -->
+          <path d="M90 122 Q95 119 100 120 Q105 119 110 122 Q106 125 100 125 Q94 125 90 122Z" fill="#7a3010"/>
+          <path d="M90 125 Q100 133 110 125 Q106 130 100 131 Q94 130 90 125Z" fill="#8a3818"/>
+          <path d="M94 128 Q100 130 106 128" stroke="rgba(180,90,50,0.28)" stroke-width="1" fill="none"/>
+
+          <!-- ===== CHISELED JAW + BEARD ===== -->
+          <!-- Exposed jaw skin — clean at chin -->
+          <path d="M82 131 Q84 143 100 149 Q116 143 118 131 Q108 139 100 141 Q92 139 82 131Z" fill="url(#jawSkin)"/>
+
+          <!-- Beard cheeks -->
+          <path d="M70 119 Q72 129 76 137 Q80 143 88 147 Q82 139 80 131 Q76 123 72 119Z" fill="#180e06" opacity="0.88"/>
+          <path d="M130 119 Q128 129 124 137 Q120 143 112 147 Q118 139 120 131 Q124 123 128 119Z" fill="#180e06" opacity="0.88"/>
+          <!-- Chin beard overlapping jaw -->
+          <path d="M76 137 Q82 149 100 154 Q118 149 124 137 Q114 145 100 148 Q86 145 76 137Z" fill="#180e06"/>
+          <ellipse cx="100" cy="147" rx="20" ry="7" fill="#180e06" opacity="0.82"/>
+          <!-- Hair texture -->
+          <g opacity="0.25" stroke="#221006" stroke-width="0.9" fill="none">
+            <path d="M73 123 Q75 131 77 139"/>
+            <path d="M79 120 Q80 129 82 138"/>
+            <path d="M121 120 Q120 129 118 138"/>
+            <path d="M127 123 Q125 131 123 139"/>
+            <path d="M90 149 Q92 152 93 153"/>
+            <path d="M100 151 Q100 154 100 155"/>
+            <path d="M110 149 Q108 152 107 153"/>
+          </g>
+
+          <!-- ===== CAPE CLASPS at shoulders ===== -->
+          <ellipse cx="73" cy="153" rx="7" ry="5" fill="rgba(0,212,255,0.55)" filter="url(#glow)"/>
+          <ellipse cx="73" cy="153" rx="3.5" ry="2.5" fill="#030c18"/>
+          <ellipse cx="127" cy="153" rx="7" ry="5" fill="rgba(0,212,255,0.55)" filter="url(#glow)"/>
+          <ellipse cx="127" cy="153" rx="3.5" ry="2.5" fill="#030c18"/>
+          <path d="M73 153 Q100 147 127 153" stroke="rgba(0,212,255,0.25)" stroke-width="1.5" fill="none"/>
+
+          <!-- Subtle necklace on neck -->
+          <path d="M89 136 Q100 140 111 136" stroke="rgba(200,160,30,0.45)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+
+          <!-- Suit collar -->
+          <path d="M57 158 Q100 148 143 158" stroke="rgba(0,212,255,0.18)" stroke-width="1.5" fill="none"/>
+
+          <!-- ===== SPARKLES ===== -->
+          <g filter="url(#glow)">
+            <g class="sparkle-a">
+              <circle cx="162" cy="82" r="3" fill="#00d4ff"/>
+              <line x1="162" y1="76" x2="162" y2="88" stroke="#00d4ff" stroke-width="1"/>
+              <line x1="156" y1="82" x2="168" y2="82" stroke="#00d4ff" stroke-width="1"/>
+            </g>
+            <g class="sparkle-b">
+              <circle cx="38" cy="110" r="2" fill="#00d4ff"/>
+              <line x1="38" y1="106" x2="38" y2="114" stroke="#00d4ff" stroke-width="0.8"/>
+              <line x1="34" y1="110" x2="42" y2="110" stroke="#00d4ff" stroke-width="0.8"/>
+            </g>
+            <g class="sparkle-c">
+              <circle cx="173" cy="172" r="2.5" fill="#00d4ff"/>
+              <line x1="173" y1="167" x2="173" y2="177" stroke="#00d4ff" stroke-width="0.8"/>
+              <line x1="168" y1="172" x2="178" y2="172" stroke="#00d4ff" stroke-width="0.8"/>
+            </g>
+            <g class="sparkle-a" style="animation-delay:1s">
+              <circle cx="27" cy="205" r="2" fill="#00d4ff" opacity="0.6"/>
+            </g>
+          </g>
+
+          <!-- Speed lines -->
+          <g opacity="0.05">
+            <line x1="0" y1="132" x2="48" y2="150" stroke="#00d4ff" stroke-width="2"/>
+            <line x1="0" y1="160" x2="44" y2="167" stroke="#00d4ff" stroke-width="1.5"/>
+            <line x1="200" y1="132" x2="152" y2="150" stroke="#00d4ff" stroke-width="2"/>
+            <line x1="200" y1="160" x2="156" y2="167" stroke="#00d4ff" stroke-width="1.5"/>
+          </g>
+        </svg>
+      </div>
+
+      <div>
+        <span class="main-title"><span class="highlight">MAIN</span></span>
+        <span class="main-title">CHARACTER</span>
+        <span class="main-title">ENERGY</span>
+      </div>
+      <div class="subtitle-line">Eduardo's Birthday</div>
+    </div>
+
+    <div class="rating-bar">
+      <div class="rating-score">10.0</div>
+      <div class="rating-text">
+        <div class="stars">★★★★★</div>
+        <div>Based on 1 unforgettable night</div>
+      </div>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <span class="divider-icon">🎬</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="tagline">
+      <p>"Every story needs a cast. You've been selected for yours.<br>Dress the part. Show up. Be legendary."</p>
+    </div>
+
+    <div class="info-box">
+      <div class="info-row">
+        <span class="info-icon">📅</span>
+        <div><p class="info-label">Premiere Date</p><p class="info-value">Saturday, April 11th</p></div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">🕔</span>
+        <div><p class="info-label">Doors Open</p><p class="info-value">4:00 PM — Party kicks off at 5</p></div>
+      </div>
+      <div class="info-row">
+        <span class="info-icon">📍</span>
+        <div><p class="info-label">Venue</p><p class="info-value">70 Princess St</p><p class="info-sub">Party Room A · 11th Floor · Under Eduardo Montesdeoca</p></div>
+      </div>
+    </div>
+
+
+    <!-- Schedule -->
+    <div class="schedule-box">
+      <h3 class="schedule-title">The Night</h3>
+      <div class="schedule-item">
+        <div class="schedule-time">4:00 PM</div>
+        <div class="schedule-dot"></div>
+        <div class="schedule-desc">Doors open — arrive, settle in, grab a drink</div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">5:00 PM</div>
+        <div class="schedule-dot"></div>
+        <div class="schedule-desc">Party officially kicks off — music, snacks, vibes</div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">5:30 PM</div>
+        <div class="schedule-dot active"></div>
+        <div class="schedule-desc">🏎️ <strong>Mario Kart Tournament</strong> begins</div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">7:00 PM</div>
+        <div class="schedule-dot active"></div>
+        <div class="schedule-desc">🏓 <strong>Beer Pong Tournament</strong> begins</div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">8:30 PM</div>
+        <div class="schedule-dot gold"></div>
+        <div class="schedule-desc">🎟️ <strong>Raffle draw</strong> · Best Costume winner announced live with trophy + sash</div>
+      </div>
+      <div class="schedule-item">
+        <div class="schedule-time">9:00 PM</div>
+        <div class="schedule-dot gold"></div>
+        <div class="schedule-desc">🎵 <strong>DJ takes over</strong> — 3 hours of nothing but bangers</div>
+      </div>
+      <div class="schedule-item last">
+        <div class="schedule-time">12:00 AM</div>
+        <div class="schedule-dot"></div>
+        <div class="schedule-desc">Last call — the night wraps, the memories don't</div>
+      </div>
+    </div>
+
+    <div class="dress-code">
+      <h3>🎭 Dress Code: <span>Main Character</span></h3>
+      <p>Come as the main character of any movie, show, game, or story you identify with. Go all out or keep it subtle — just own it.</p>
+      <span class="dress-optional">✓ Fully Optional — Come as you are if you prefer</span>
+    </div>
+
+    <div class="perks">
+      <div class="perk"><div class="perk-icon">🎮</div><div class="perk-label">Games<br>All Night</div></div>
+      <div class="perk"><div class="perk-icon">🎵</div><div class="perk-label">Live<br>Playlist</div></div>
+      <div class="perk"><div class="perk-icon">🍺</div><div class="perk-label">BYOB<br>Bring It</div></div>
+      <div class="perk"><div class="perk-icon">🍕</div><div class="perk-label">Snacks<br>Provided</div></div>
+    </div>
+
+    <!-- Birthday gift note -->
+    <div class="gift-note">
+      <div class="gift-note-icon">🎁</div>
+      <div class="gift-note-text">
+        <p>If you were planning on getting me a gift — put it toward the raffle instead. Every ticket goes toward making this night better for all of us: better DJ, better snacks, better everything. The bigger the pot, the bigger the night.</p>
+        <p>And if you weren't planning on it — no pressure at all. Just show up and let's have a great time. 🙌</p>
+      </div>
+    </div>
+
+    <!-- Explore section -->
+    <div class="explore-header">
+      <div class="explore-line"></div>
+      <span class="explore-title">DON'T MISS THESE</span>
+      <div class="explore-line"></div>
+    </div>
+
+    <div class="explore-cards">
+      <a href="games.html" class="explore-card">
+        <div class="explore-card-top">
+          <span class="explore-card-icon">🏎️🏓</span>
+          <span class="explore-card-badge explore-badge-paid">Win Cash</span>
+        </div>
+        <div class="explore-card-title">Game Sign-Ups</div>
+        <div class="explore-card-desc">Mario Kart & Beer Pong tournaments with cash prizes. Free games too. Sign up before spots fill up.</div>
+        <div class="explore-card-cta">Sign Up Now →</div>
+      </a>
+      <a href="raffle.html" class="explore-card">
+        <div class="explore-card-top">
+          <span class="explore-card-icon">🎟️</span>
+          <span class="explore-card-badge explore-badge-raffle">50/50</span>
+        </div>
+        <div class="explore-card-title">Birthday Raffle</div>
+        <div class="explore-card-desc">$5 a ticket. Win 50% of the pot in cash. Consider it my birthday gift every ticket makes the night better.</div>
+        <div class="explore-card-cta">Get Tickets →</div>
+      </a>
+      <a href="vote.html" class="explore-card">
+        <div class="explore-card-top">
+          <span class="explore-card-icon">🏆</span>
+          <span class="explore-card-badge explore-badge-vote">On the Night</span>
+        </div>
+        <div class="explore-card-title">Costume Vote</div>
+        <div class="explore-card-desc">Best main character wins a trophy, a sash and a live announcement. Vote on the night.</div>
+        <div class="explore-card-cta">See Nominees →</div>
+      </a>
+    </div>
+
+    <div class="rsvp-title">Cast Your <span>RSVP</span></div>
+
+    <div class="rsvp-section" id="rsvpSection">
+      <span class="rsvp-label">Your name</span>
+      <input class="rsvp-input" id="nameInput" type="text" placeholder="Your full name…" />
+      <span class="rsvp-label">Will you be there?</span>
+      <div class="choice-group" id="attendingGroup">
+        <button class="choice-btn" onclick="selectChoice('attending', this, &quot;I'll be there 🎬&quot;)">I'll be there 🎬</button>
+        <button class="choice-btn" onclick="selectChoice('attending', this, &quot;Can't make it 😔&quot;)">Can't make it 😔</button>
+      </div>
+      <span class="rsvp-label">Bringing a +1?</span>
+      <div class="choice-group" id="plusoneGroup">
+        <button class="choice-btn" onclick="selectChoice('plusone', this, &quot;Yes, rolling with a co-star&quot;)">Yes, rolling with a co-star</button>
+        <button class="choice-btn" onclick="selectChoice('plusone', this, &quot;Solo mission&quot;)">Solo mission</button>
+      </div>
+      <span class="rsvp-label">Who are you coming as? 🎭</span>
+      <input class="rsvp-input" id="characterInput" type="text" placeholder="Your main character… or 'still deciding'" />
+
+      <div id="plusoneFields" style="display:none;">
+        <span class="rsvp-label">Your +1's name</span>
+        <input class="rsvp-input" id="plusoneNameInput" type="text" placeholder="Their full name…" />
+        <span class="rsvp-label">Your +1's character 🎭</span>
+        <input class="rsvp-input" id="plusoneCharacterInput" type="text" placeholder="Their main character… or 'still deciding'" />
+      </div>
+
+      <span class="rsvp-label">Leave Eduardo a message</span>
+      <textarea class="rsvp-input textarea" id="messageInput" placeholder="Say something hype…"></textarea>
+      <p class="error-msg" id="errorMsg">Fill in your name and make your selections ✦</p>
+      <button class="submit-btn" onclick="submitRSVP()">CONFIRM YOUR ROLE →</button>
+    </div>
+
+    <div class="rsvp-success" id="rsvpSuccess">
+      <h3 id="successTitle"></h3>
+      <p id="successMsg"></p>
+    </div>
+
+    <div class="footer"><p>A production by Eduardo Montesdeoca · April 2026 · Toronto</p></div>
+  </div>
+
+  <script>
+    const selections = { attending: '', plusone: '' };
+    function selectChoice(group, btn, value) {
+      selections[group] = value;
+      document.querySelectorAll(`#${group}Group .choice-btn`).forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      // Show +1 fields if they select yes
+      if (group === 'plusone') {
+        const show = value.includes('co-star');
+        document.getElementById('plusoneFields').style.display = show ? 'block' : 'none';
+      }
+    }
+    function submitRSVP() {
+      const name = document.getElementById('nameInput').value.trim();
+      const message = document.getElementById('messageInput').value.trim();
+      const err = document.getElementById('errorMsg');
+      if (!name || !selections.attending || !selections.plusone) {
+        err.style.display = 'block';
+        setTimeout(() => err.style.display = 'none', 3000);
+        return;
+      }
+      const attending = selections.attending.includes('be there');
+      const character = document.getElementById('characterInput').value.trim();
+
+      // Save to sessionStorage so vote page can pick it up
+      const existing = JSON.parse(sessionStorage.getItem('nominees') || '[]');
+      if (attending && character && character.toLowerCase() !== 'still deciding') {
+        if (!existing.find(n => n.name.toLowerCase() === name.toLowerCase())) {
+          existing.push({ name, character, votes: 0 });
+        }
+      }
+      // Also save +1 if they have one
+      const plusoneName = document.getElementById('plusoneNameInput').value.trim();
+      const plusoneChar = document.getElementById('plusoneCharacterInput').value.trim();
+      if (attending && selections.plusone.includes('co-star') && plusoneName && plusoneChar && plusoneChar.toLowerCase() !== 'still deciding') {
+        if (!existing.find(n => n.name.toLowerCase() === plusoneName.toLowerCase())) {
+          existing.push({ name: plusoneName, character: plusoneChar, votes: 0 });
+        }
+      }
+      sessionStorage.setItem('nominees', JSON.stringify(existing));
+
+      document.getElementById('successTitle').textContent = attending ? "THE PARTY NEEDED YOU. 🎬" : "WE'LL MISS YOU.";
+      document.getElementById('successMsg').textContent = attending
+        ? character && character.toLowerCase() !== 'still deciding'
+          ? `Good call. See you Saturday — ${character} is going to be a hit. 🔥`
+          : "Good call. See you Saturday — now go figure out your character. 🔥"
+        : "Noted. We'll dedicate a drink to you. 🥂";
+      document.getElementById('rsvpSection').style.display = 'none';
+      document.getElementById('rsvpSuccess').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
