@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Your Raffle Ticket — Eduardo's Birthday</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <script>
+    window.addEventListener('load', function() {
+      var params = new URLSearchParams(window.location.search);
+      var codes = params.get('codes') ? params.get('codes').split(',') : [];
+      var name = params.get('name') ? decodeURIComponent(params.get('name')) : 'Guest';
+
+      document.getElementById('ticket-name').textContent = name;
+      document.getElementById('ticket-count').textContent = codes.length + ' ticket' + (codes.length !== 1 ? 's' : '');
+
+      var container = document.getElementById('tickets-container');
+      if (!codes.length) {
+        container.innerHTML = '<p style="color:rgba(214,234,248,0.4);text-align:center;font-style:italic;">No ticket codes found.</p>';
+        return;
+      }
+
+      container.innerHTML = codes.map(function(code, i) {
+        return '<div class="ticket-card">' +
+          '<div class="ticket-card-inner">' +
+            '<div class="ticket-card-left">' +
+              '<div class="ticket-card-event">Eduardo\'s Birthday</div>' +
+              '<div class="ticket-card-date">Saturday, April 11th 2026</div>' +
+              '<div class="ticket-card-venue">70 Princess St · Party Room A · 11th Floor</div>' +
+            '</div>' +
+            '<div class="ticket-card-stub">' +
+              '<div class="ticket-card-num">#' + (i+1) + '</div>' +
+              '<div class="ticket-card-code">' + code.trim() + '</div>' +
+              '<div class="ticket-card-label">50/50 Raffle</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    });
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cyan: #00d4ff; --navy: #050c18; --navy2: #080f1e; --navy-mid: #0d1828;
+      --cream: #d6eaf8; --gold: #f5c518;
+    }
+    body { min-height: 100vh; background: var(--navy); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; inset: 0; background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,212,255,0.012) 3px, rgba(0,212,255,0.012) 4px); pointer-events: none; z-index: 99; }
+    body::after { content: ''; position: fixed; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(0,100,180,0.15) 0%, transparent 65%); pointer-events: none; z-index: 0; }
+    .film-strip-left, .film-strip-right { position: fixed; top: 0; bottom: 0; width: 28px; background: var(--navy2); border-right: 1px solid rgba(0,212,255,0.12); z-index: 10; display: flex; flex-direction: column; justify-content: space-around; align-items: center; padding: 10px 0; }
+    .film-strip-right { right: 0; left: auto; border-right: none; border-left: 1px solid rgba(0,212,255,0.12); }
+    .film-hole { width: 12px; height: 16px; background: var(--navy); border-radius: 2px; border: 1px solid rgba(0,212,255,0.18); flex-shrink: 0; }
+    .container { max-width: 460px; margin: 0 auto; padding: 0 44px; position: relative; z-index: 2; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+    @keyframes glow { 0%,100%{box-shadow:0 0 20px rgba(245,197,24,0.2);} 50%{box-shadow:0 0 40px rgba(245,197,24,0.5);} }
+
+    .page-header { text-align: center; padding: 32px 0 24px; animation: fadeUp 0.5s ease both; }
+    .tag { display: inline-block; background: var(--gold); color: var(--navy); font-size: 9px; letter-spacing: 4px; text-transform: uppercase; padding: 4px 14px; margin-bottom: 16px; font-weight: 700; }
+    .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 42px; color: var(--cream); letter-spacing: 3px; line-height: 1; margin-bottom: 6px; }
+    .page-header h1 span { color: var(--gold); }
+    .page-header .sub { font-size: 13px; color: rgba(214,234,248,0.55); font-style: italic; }
+    .page-header .ticket-count { display: inline-block; margin-top: 10px; background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.25); color: var(--cyan); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; }
+
+    /* Individual ticket cards */
+    .ticket-card { margin-bottom: 16px; animation: fadeUp 0.5s ease both; }
+    .ticket-card-inner { display: flex; background: linear-gradient(135deg, #0d1f35, #071018); border: 2px solid var(--gold); border-radius: 6px; overflow: hidden; animation: glow 3s ease-in-out infinite; position: relative; }
+    .ticket-card-inner::before { content: ''; position: absolute; top: 50%; left: calc(70% - 1px); transform: translateY(-50%); height: 80%; border-left: 2px dashed rgba(245,197,24,0.3); pointer-events: none; }
+    /* Notches */
+    .ticket-card-inner::after { content: ''; position: absolute; top: 50%; left: 70%; transform: translate(-50%, -50%); width: 20px; height: 20px; background: var(--navy); border-radius: 50%; border: 2px solid var(--gold); }
+
+    .ticket-card-left { flex: 1; padding: 20px 18px; display: flex; flex-direction: column; justify-content: center; }
+    .ticket-card-event { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--cream); letter-spacing: 2px; margin-bottom: 6px; }
+    .ticket-card-date { font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+    .ticket-card-venue { font-size: 10px; color: rgba(214,234,248,0.4); line-height: 1.5; }
+
+    .ticket-card-stub { width: 30%; background: rgba(0,0,0,0.2); padding: 16px 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .ticket-card-num { font-family: 'Bebas Neue', sans-serif; font-size: 13px; color: rgba(245,197,24,0.4); letter-spacing: 2px; margin-bottom: 8px; }
+    .ticket-card-code { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); letter-spacing: 3px; line-height: 1; margin-bottom: 6px; text-shadow: 0 0 10px rgba(245,197,24,0.4); }
+    .ticket-card-label { font-size: 8px; letter-spacing: 2px; color: rgba(0,212,255,0.5); text-transform: uppercase; }
+
+    /* Info box */
+    .info-box { background: var(--navy-mid); border: 1px solid rgba(0,212,255,0.2); border-left: 3px solid var(--cyan); padding: 16px 18px; margin-bottom: 16px; animation: fadeUp 0.5s 0.2s ease both; }
+    .info-box h3 { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--cream); margin-bottom: 10px; }
+    .info-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
+    .info-row:last-child { margin-bottom: 0; }
+    .info-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .info-text { font-size: 12px; color: rgba(214,234,248,0.65); line-height: 1.5; }
+    .info-text strong { color: var(--cream); }
+
+    /* Screenshot hint */
+    .screenshot-hint { text-align: center; padding: 16px; margin-bottom: 20px; animation: fadeUp 0.5s 0.3s ease both; }
+    .screenshot-hint p { font-size: 11px; color: rgba(0,212,255,0.35); letter-spacing: 2px; text-transform: uppercase; }
+
+    .nav-back { display: block; text-align: center; padding: 14px; background: var(--navy-mid); border: 1px solid rgba(0,212,255,0.2); color: rgba(0,212,255,0.5); text-decoration: none; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; transition: all 0.2s; }
+    .nav-back:hover { background: var(--cyan); color: var(--navy); }
+  </style>
+</head>
+<body>
+  <div class="film-strip-left"><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div></div>
+  <div class="film-strip-right"><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div><div class="film-hole"></div></div>
+
+  <div class="container">
+    <div class="page-header">
+      <div class="tag">🎟️ Raffle Ticket</div>
+      <h1>YOU'RE IN THE <span>DRAW</span></h1>
+      <p class="sub" id="ticket-name">Loading...</p>
+      <div class="ticket-count" id="ticket-count">— tickets</div>
+    </div>
+
+    <div id="tickets-container"></div>
+
+    <div class="info-box">
+      <h3>What happens next?</h3>
+      <div class="info-row"><span class="info-icon">📍</span><div class="info-text"><strong>April 11th at 8:30 PM</strong> — winner drawn live at the party, 70 Princess St</div></div>
+      <div class="info-row"><span class="info-icon">🎟️</span><div class="info-text">Each code is a separate entry in the draw. More tickets = better odds.</div></div>
+      <div class="info-row"><span class="info-icon">🏆</span><div class="info-text"><strong>50% of the total pot</strong> goes to the winner in cash on the spot.</div></div>
+      <div class="info-row"><span class="info-icon">📱</span><div class="info-text">Screenshot this page or save your codes — you'll need them at the door if your name is called.</div></div>
+    </div>
+
+    <div class="screenshot-hint"><p>📸 Screenshot your tickets to save them</p></div>
+    <a href="raffle.html" class="nav-back">← Back to Raffle</a>
+  </div>
+</body>
+</html>
