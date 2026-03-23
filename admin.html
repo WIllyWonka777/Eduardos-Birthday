@@ -111,6 +111,55 @@
     var _mk_history = []; // for undo
     var _mk_bracket = null;
     var _bp_locked = false;
+    var _bp_pollInterval = null;
+    var _mk_pollInterval = null;
+    var _activeTab = 'overview';
+
+    function startBracketPoll(game) {
+      stopBracketPoll(game);
+      var interval = setInterval(function(){
+        fetch(SCRIPT_URL + '?action=get_bracket&game=' + game)
+          .then(function(r){ return r.json(); })
+          .then(function(d){
+            if (!d.success || !d.bracket) return;
+            var bracket = d.bracket;
+            if (game === 'beerpong') {
+              // Only update if backend has more progress than local
+              var backendComplete = countComplete(bracket);
+              var localComplete = _bp_bracket ? countComplete(_bp_bracket) : -1;
+              if (backendComplete > localComplete) {
+                _bp_bracket = bracket;
+                _bp_locked = true;
+                renderBPBracketAdmin();
+                adminLog('↻ Bracket synced from backend', 'success');
+              }
+            } else {
+              var backendComplete = countComplete(bracket);
+              var localComplete = _mk_bracket ? countComplete(_mk_bracket) : -1;
+              if (backendComplete > localComplete) {
+                _mk_bracket = bracket;
+                _mk_locked = true;
+                renderMKBracketAdmin();
+                adminLog('↻ MK Bracket synced from backend', 'success');
+              }
+            }
+          }).catch(function(){});
+      }, 5000);
+      if (game === 'beerpong') _bp_pollInterval = interval;
+      else _mk_pollInterval = interval;
+    }
+
+    function stopBracketPoll(game) {
+      if (game === 'beerpong' && _bp_pollInterval) { clearInterval(_bp_pollInterval); _bp_pollInterval = null; }
+      if (game === 'mariokart' && _mk_pollInterval) { clearInterval(_mk_pollInterval); _mk_pollInterval = null; }
+    }
+
+    function countComplete(bracket) {
+      var n = 0;
+      if (!bracket || !bracket.rounds) return 0;
+      bracket.rounds.forEach(function(r){ r.matches.forEach(function(m){ if (m.status==='complete'||m.status==='bye') n++; }); });
+      return n;
+    }
     var _mk_locked = false;
     var _raffle = [];
     var _nominees = [];
@@ -148,6 +197,10 @@
       for (var i=0; i<panels.length; i++) panels[i].classList.remove('active');
       document.getElementById('atab-'+tab).classList.add('active');
       document.getElementById('panel-'+tab).classList.add('active');
+      // Start/stop bracket polling based on which tab is active
+      stopBracketPoll('beerpong'); stopBracketPoll('mariokart');
+      if (tab === 'beerpong' && _bp_locked) startBracketPoll('beerpong');
+      if (tab === 'mariokart' && _mk_locked) startBracketPoll('mariokart');
     }
 
     // ── RSVP ──
@@ -270,6 +323,35 @@
         if (m.p2) inBracket[m.p2.name] = true;
       });
       return inBracket;
+    }
+
+    function resetBracket(game) {
+      if (!confirm('RESET ' + game.toUpperCase() + ' BRACKET?\n\nThis will:\n• Delete the bracket from the backend\n• Unlock sign-ups\n• Reset all match results\n\nTeam sign-ups are kept. Use this for testing.')) return;
+      fetch(SCRIPT_URL + '?action=reset_bracket&game=' + game)
+        .then(function(r){ return r.json(); })
+        .then(function(d){
+          if (d.success) {
+            if (game === 'beerpong') {
+              _bp_bracket = null; _bp_locked = false; _bp_history = [];
+              document.getElementById('bp-bracket-section').style.display = 'none';
+              document.getElementById('bp-gen-btn').textContent = '🔒 LOCK SIGN-UPS & GENERATE BRACKET';
+              document.getElementById('bp-gen-btn').disabled = false;
+              document.getElementById('bp-champion').innerHTML = '';
+              stopBracketPoll('beerpong');
+            } else {
+              _mk_bracket = null; _mk_locked = false; _mk_history = [];
+              document.getElementById('mk-bracket-section').style.display = 'none';
+              document.getElementById('mk-gen-btn').textContent = '🔒 LOCK SIGN-UPS & GENERATE GROUPS';
+              document.getElementById('mk-gen-btn').disabled = false;
+              document.getElementById('mk-champion').innerHTML = '';
+              stopBracketPoll('mariokart');
+            }
+            renderBPSignups();
+            adminLog('✓ Bracket reset — sign-ups unlocked', 'success');
+          } else {
+            adminLog('✗ Reset failed: ' + (d.error||''), 'error');
+          }
+        }).catch(function(err){ adminLog('✗ Network error: ' + err, 'error'); });
     }
 
     function addWildcard(i) {
@@ -1438,6 +1520,7 @@
       </div>
       <div class="section" id="bp-bracket-section" style="display:none">
         <h2>Bracket</h2>
+        <button class="action-btn" onclick="resetBracket('beerpong')" style="background:rgba(255,68,68,0.1);border:1px solid rgba(255,68,68,0.4);color:var(--red);font-size:12px;margin-bottom:8px">🗑 RESET BRACKET — UNLOCK & CLEAR</button>
         <button class="action-btn" id="bp-undo-btn" onclick="undoBPWinner()" style="display:none;background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid var(--cyan);margin-bottom:10px">↩ UNDO LAST RESULT</button>
         <div id="bp-bracket-admin"></div>
         <div id="bp-champion"></div>
@@ -1456,6 +1539,7 @@
       </div>
       <div class="section" id="mk-bracket-section" style="display:none">
         <h2>Race Groups</h2>
+        <button class="action-btn" onclick="resetBracket('mariokart')" style="background:rgba(255,68,68,0.1);border:1px solid rgba(255,68,68,0.4);color:var(--red);font-size:12px;margin-bottom:8px">🗑 RESET BRACKET — UNLOCK & CLEAR</button>
         <button class="action-btn" id="mk-undo-btn" onclick="undoMKWinner()" style="display:none;background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid var(--cyan);margin-bottom:10px">↩ UNDO LAST RESULT</button>
         <div id="mk-bracket-admin"></div>
         <div id="mk-champion"></div>

@@ -313,15 +313,36 @@
         .then(function(d){ if(d.success&&d.data){ d.data.filter(function(e){ return e.status!=='removed'; }).forEach(function(e){ _data.kingscup.push(e.name); }); renderKings(); } })
         .catch(function(){});
 
-      // Load official brackets if locked
-      fetch(SCRIPT_URL+'?action=get_bracket&game=beerpong')
-        .then(function(r){return r.json();})
-        .then(function(d){ if(d.success&&d.bracket&&d.locked){ _bp_bracket=d.bracket; renderBeerPong(); } })
-        .catch(function(){});
-      fetch(SCRIPT_URL+'?action=get_bracket&game=mariokart')
-        .then(function(r){return r.json();})
-        .then(function(d){ if(d.success&&d.bracket&&d.locked){ _mk_bracket=d.bracket; renderMarioKart(); } })
-        .catch(function(){});
+      function countComplete(b) {
+        var n = 0;
+        if (!b||!b.rounds) return 0;
+        b.rounds.forEach(function(r){ r.matches.forEach(function(m){ if(m.status==='complete'||m.status==='bye') n++; }); });
+        return n;
+      }
+
+      function fetchBrackets() {
+        fetch(SCRIPT_URL+'?action=get_bracket&game=beerpong')
+          .then(function(r){return r.json();})
+          .then(function(d){
+            if (d.success&&d.bracket&&d.locked) {
+              if (!_bp_bracket || countComplete(d.bracket) !== countComplete(_bp_bracket)) {
+                _bp_bracket = d.bracket; renderBeerPong();
+              }
+            }
+          }).catch(function(){});
+        fetch(SCRIPT_URL+'?action=get_bracket&game=mariokart')
+          .then(function(r){return r.json();})
+          .then(function(d){
+            if (d.success&&d.bracket&&d.locked) {
+              if (!_mk_bracket || countComplete(d.bracket) !== countComplete(_mk_bracket)) {
+                _mk_bracket = d.bracket; renderMarioKart();
+              }
+            }
+          }).catch(function(){});
+      }
+
+      fetchBrackets();
+      setInterval(fetchBrackets, 8000);
     });
   </script>
 
